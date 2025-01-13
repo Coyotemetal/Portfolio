@@ -53,6 +53,7 @@ main {
     color: #141414 ;
     pointer-events: none;
 }
+
 /*bouton*/
 #bouton {
     position: absolute;
