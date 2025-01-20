@@ -14,7 +14,7 @@ main {
     color: aliceblue;
     overflow-y: hidden;
 }
-video {
+img {
     position: absolute;
     min-height: 100%;
     min-width: 100%;
