@@ -1,8 +1,8 @@
-body {
+* {
     margin: 0;
     padding: 0;
 }
-main {
+#main_index {
     position: relative;
     height: 100vh;
     width: 100%;
@@ -14,7 +14,7 @@ main {
     color: aliceblue;
     overflow-y: hidden;
 }
-img {
+#bloc_img {
     position: absolute;
     min-height: 100%;
     min-width: 100%;
@@ -22,7 +22,6 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
-
 }
 #titre {
     position: relative;
@@ -115,7 +114,34 @@ label {
 
 
 /*Zone CV main*/
-#cv_main {
-    background-image: url(../image/Picwish_Général_HD_4.jpeg);
+#body_cv header {
+    height: 200px;
+    width: 100%;
+    background: url(../image/Pixel_bureau.jpeg) fixed 100px ;
+    display: flex;
+    align-items: flex-end;
+    color: white;
 }
+#body_cv header p {
+    font-size: 50px;
+}
+#body_cv main {
+    height: 100%;
+    width: 100%;
+    color: black;
+}
+.title_profil {
+    color: rgb(16, 74, 74);
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.liste-type {
+    list-style-type: square;
+    margin-left: 25px;
+}
+.title_theme {
+    
+}
+
 /*FIN zone CV main*/
