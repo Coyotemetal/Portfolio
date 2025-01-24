@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/particule.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <title>Document</title>
+    <title>Accueil</title>
 </head>
 <body>
     <main id="main_index">
-        <div id="bloc_img">
-            <img id="FE" src="image/Picwish_Général_HD_2.jpeg"></img>
+        <div>
+            <canvas id="background"></canvas>
+            <script src="js/paticule.js"></script>
+            <img id="process" src="process.png" alt="">
         </div>
-        <h1 id="titre">Bienvenue sur mon Portfolio</h1>
+        <h1 id="titre">Portfolio de Benjamin CÉZAR</h1>
         <div id="nav_box">
             
             <div class="bouton_hover" id="bouton_nav1">
@@ -21,12 +24,12 @@
                 </a>
             </div>
             <div class="bouton_hover" id="bouton_nav2">
-                <a href="cv.html">
+                <a href="profil.html">
                     <i class="fa-solid fa-address-card icone"></i>
                 </a>
             </div>
             <div class="bouton_hover" id="bouton_nav3">
-                <a href="">
+                <a href="projet.html">
                     <i class="fa-brands fa-codepen icone"></i>
                 </a>
             </div>
@@ -39,11 +42,14 @@
             <div class="bouton_hover" id="bouton_nav5">
 
             </div>
-            
+            <div>
             <input type="checkbox" id="bouton">
-            <label for="bouton"><i id="icone_label" class="fa-solid fa-gear"></i></label>
+            <label for="bouton"><img id="icone_label" src="image/img_processeur.png" alt=""></label>
 
             </div>
     </main>
 </body>
 </html>
+
+
+
