@@ -139,6 +139,17 @@
         list-style-type: square;
         margin-left: 25px;
     }
+    #fibre_box {
+        display: flex;
+        margin-left: 50px;
+    }
+    #fibre_box img {
+        position: relative;
+        top: 50px;
+        left: 50px;
+        height: 200px;
+        width: 400px;
+    }
     /*FIN zone CV main*/
 /*FIN ZONE PROFIL*/
 
