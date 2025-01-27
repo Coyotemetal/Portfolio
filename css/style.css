@@ -150,6 +150,16 @@
         height: 200px;
         width: 400px;
     }
+    #cv_box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+    #cv_img {
+        height: 500px;
+    }
     /*FIN zone CV main*/
 /*FIN ZONE PROFIL*/
 
