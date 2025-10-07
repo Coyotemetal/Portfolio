@@ -1,0 +1,149 @@
+/* Reset de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+  
+  /* Particules en fond */
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #0a1f44; /* Bleu foncé */
+  }
+  
+  /* Menu latéral gauche */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 220px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  
+  /* Nom Prénom en haut du menu */
+  .nom-prenom-sidebar {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #88cfff;
+  }
+  
+  /* Titre Menu */
+  .sidebar h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  /* Liens du menu */
+  .sidebar ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #88cfff;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .sidebar ul li a:hover {
+    color: #ffffff;
+  }
+  
+  /* Contenu principal */
+  .content {
+    margin-left: 240px; /* Espace pour le menu */
+    padding: 60px;
+  }
+  
+  /* Section accueil */
+  .accueil {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    text-align: center;
+  }
+  
+  .accueil h1 {
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+  
+  .nom-prenom {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #88cfff;
+    margin-bottom: 10px;
+  }
+  
+  .sous-titre {
+    font-size: 1.2em;
+    font-style: italic;
+    color: #ccc;
+  }
+
+  .content_section {
+    padding: 10px;
+  }
+  .cv {
+    color: rgb(27, 70, 126);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .cv:hover {
+    color: violet;
+    transition: 200ms;
+  }
+
+  /*Epreuve.html*/
+      /*content*/
+        .E4 {
+          height: 90vh;
+          width: 100%;
+        }
+
+
+
+/*section veille tech*/
+.content section h1 {
+  font-size: 2.5em;        /* Agrandit le titre */
+  text-align: center;      /* Centre le titre horizontalement */
+  margin-bottom: 30px;     /* Espace sous le titre */
+  color: #ffffff;          /* Pour la lisibilité sur fond sombre */
+}
+.content section p {
+  margin-bottom: 20px;       /* Espace entre les paragraphes */
+  line-height: 1.7;          /* Hauteur de ligne pour la lisibilité */
+  font-size: 1.1em;    
+        /* Taille de texte légèrement agrandie */
+  max-width: 800px;          /* Limite la largeur pour faciliter la lecture */
+  text-align: justify;       /* Justifie le texte pour un aspect pro */
+}
+
+.content section p:first-of-type {
+  /* styles appliqués uniquement au premier <p> dans chaque <section> */
+  margin-top: 5px;
+}
