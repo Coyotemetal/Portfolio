@@ -139,7 +139,7 @@
   line-height: 1.7;          /* Hauteur de ligne pour la lisibilité */
   font-size: 1.1em;    
         /* Taille de texte légèrement agrandie */
-  max-width: 800px;          /* Limite la largeur pour faciliter la lecture */
+  max-width: 100%;          /* Limite la largeur pour faciliter la lecture */
   text-align: justify;       /* Justifie le texte pour un aspect pro */
 }
 
