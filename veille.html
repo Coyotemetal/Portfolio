@@ -25,25 +25,154 @@
   </nav>
 
   <!-- Contenu principal -->
-    <main class="content">
-  <section>
-    <h1>Veille technologique - FTTR (Fiber to the Room)</h1>
+  <main class="content">
+    <section class="veille-tabs">
+    <!-- Boutons pour choisir la veille -->
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="veille1">Veille 1</button>
+      <button class="tab-btn" data-tab="veille2">Veille 2</button>
+    </div>
 
+    <!-- Veille 1 -->
+    <div class="tab-content" id="veille1">
+      <section>
+    <h1>Veille technologique - FTTR (Fiber to the Room)</h1>
     <p>
       Le FTTR, ou <strong>Fiber To The Room</strong>, est une technologie récente d’extension de la fibre optique jusqu’aux différentes pièces d’un logement ou d’un bâtiment. Contrairement à la fibre classique qui s'arrête au niveau de la box (souvent installée dans le salon), le FTTR permet de déployer des fibres optiques secondaires dans chaque pièce, garantissant ainsi une connexion haut débit stable et homogène partout dans l’habitation.
     </p>
-
     <p>
       Cette technologie est particulièrement utile pour répondre aux besoins croissants en bande passante, notamment avec le télétravail, les objets connectés, la domotique ou encore le streaming en haute définition. Le FTTR vise à éliminer les pertes de performance liées au Wi-Fi ou aux câbles Ethernet, en assurant une connexion ultra-rapide, même à l'étage ou dans des zones éloignées de la box.
     </p>
-
     <p>
       En France, l'opérateur alsacien <strong>Vialis</strong> est pionnier dans le déploiement du FTTR. Depuis début 2025, Vialis propose cette technologie dans environ 70 communes d'Alsace, avec pour objectif d'étendre la couverture à 700 communes d'ici fin 2025. Le FTTR de Vialis offre des débits allant jusqu'à 8 Gbit/s symétriques, grâce à des câbles discrets de 1,2 mm installés le long des plinthes, connectant la box principale à des satellites dans chaque pièce. Cette solution garantit une connectivité homogène et stable dans toute l'habitation.
     </p>
-
     <p>
       Au Japon, pays reconnu pour son avancée technologique, le FTTR est en phase de développement. Des entreprises japonaises collaborent avec des partenaires internationaux pour tester et déployer cette technologie dans des environnements résidentiels et commerciaux. L'objectif est d'améliorer la couverture réseau et de répondre aux besoins croissants en bande passante, notamment avec l'essor des objets connectés et des services numériques. Bien que le FTTR ne soit pas encore généralisé au Japon, les initiatives en cours laissent présager une adoption plus large dans un avenir proche.
     </p>
+  </section>
+    </div>
+
+    <!-- Veille 2 -->
+    <div class="tab-content" id="veille2" style="display:none;">
+   <h1>Veille technologique - DATIS</h1>
+
+  <p>Inspeere est une société française créée en 2019, par Olivier Dale et Michaël Ferrec, spécialisée dans les solutions de sauvegarde professionnelle distribuée. Basée à Poitiers et organisée en SAS, l’entreprise s’appuie sur des travaux de recherche du CNRS et de l’Université Côte d’Azur pour proposer un système de sauvegarde innovant, souverain, hautement sécurisé et éco-responsable. Sa technologie brevetée répartit les données sur plusieurs sites, ce qui renforce la résilience, limite les risques de cyberattaques et réduit la dépendance aux data centers. Inspeere commercialise notamment la solution DATIS, soutenue par plusieurs investisseurs publics et privés.</p>
+
+  <h2>La solution DATIS, c’est quoi ?</h2>
+
+  <h3>1. Architecture distribuée</h3>
+  <p>DATIS n’utilise pas un point de stockage centralisé. Chaque site (appelé DatisBox) participe au stockage partagé, formant un réseau de sauvegarde pair-à-pair (P2P).</p>
+  <ul>
+    <li>Les données sont découpées en blocs</li>
+    <li>Chaque bloc est chiffré et redondé</li>
+    <li>Les blocs sont répartis sur plusieurs sites clients</li>
+  </ul>
+  <p>Grâce à cette topologie :</p>
+  <ul>
+    <li>Il n’existe pas de point de défaillance unique</li>
+    <li>Une attaque ou une panne localisée ne compromet pas l’intégrité des données</li>
+    <li>La capacité cumulée du réseau augmente en même temps que le nombre de nœuds</li>
+  </ul>
+  <hr>
+
+  <h3>2. Protection renforcée contre les cybermenaces</h3>
+  <p>Avec la montée des ransomware et intrusions, DATIS propose une protection radicalement différente :</p>
+  <ul>
+    <li>Chaque fragment de données est illisible hors contexte, car il est chiffré et incomplet seul</li>
+    <li>La restauration nécessite la combinaison de blocs provenant de plusieurs sites</li>
+    <li>L’exécution de snapshots distribués permet une restauration sûre même en cas d’attaque locale</li>
+  </ul>
+  <p>Ce modèle rend les données :</p>
+  <ul>
+    <li>Plus difficiles à identifier</li>
+    <li>Très complexes à compromettre</li>
+    <li>Inaccessibles sans réunir plusieurs éléments cryptographiques distincts</li>
+  </ul>
+  <hr>
+
+  <h3>3. Intégration poussée avec ZFS</h3>
+  <p>DATIS s’appuie sur ZFS, considéré comme l’un des systèmes de fichiers les plus résilients du marché. Inspeere a développé des extensions propriétaires permettant :</p>
+  <ul>
+    <li>Le transfert de flux ZFS (ZFS streams) en temps réel vers plusieurs cibles</li>
+    <li>L’exécution de snapshots simultanés distribués</li>
+    <li>Une garantie d’intégrité end-to-end</li>
+  </ul>
+  <p>Cette intégration assure :</p>
+  <ul>
+    <li>Une surveillance permanente</li>
+    <li>Une récupération granulaire et fiable</li>
+    <li>L’absence de corruption silencieuse de données (ZFS scrub)</li>
+  </ul>
+  <hr>
+
+  <h3>4. Performances de restauration améliorées (QoS)</h3>
+  <p>L’un des défis des sauvegardes distribuées est la vitesse de récupération. DATIS intègre un mécanisme d’optimisation breveté :</p>
+  <ul>
+    <li>Lors d’une restauration, le système identifie les nœuds les plus disponibles</li>
+    <li>Le flux de récupération est équilibré automatiquement</li>
+    <li>La latence réseau est prise en compte dans le choix des sources</li>
+  </ul>
+  <p>Résultat :</p>
+  <ul>
+    <li>Restauration plus rapide, même sur un réseau étendu</li>
+    <li>Charge homogène sur l’ensemble des nœuds</li>
+  </ul>
+  <hr>
+
+  <h3>5. Solution souveraine et conforme</h3>
+  <p>DATIS s’aligne sur les attentes françaises et européennes :</p>
+  <ul>
+    <li>Stockage des données chez le client ou dans son réseau de partenaires</li>
+    <li>Pas de transfert automatique vers des clouds extra-européens</li>
+    <li>Respect des recommandations CNIL</li>
+    <li>Maîtrise complète des clés de chiffrement</li>
+  </ul>
+  <p>Ce positionnement “souverain par construction” séduit :</p>
+  <ul>
+    <li>Les collectivités</li>
+    <li>Les PME et ETI sensibles</li>
+    <li>Les structures médicales</li>
+    <li>Les organisations soumises au RGPD ou aux exigences ANSSI</li>
+  </ul>
+  <hr>
+
+  <h3>6. Impact écologique positif</h3>
+  <ul>
+    <li>Réduit la consommation énergétique globale</li>
+    <li>Valorise l’infrastructure existante des clients</li>
+    <li>Encourage une logique d’économie circulaire numérique</li>
+  </ul>
+  <p>Le stockage ne demande pas d’immenses salles serveurs, mais réutilise les ressources déjà présentes dans les organisations.</p>
+  <hr>
+
+  <h3>7. Technologies et écosystème</h3>
+  <ul>
+    <li>Debian / Linux</li>
+    <li>ZFS</li>
+    <li>Proxmox / LXC</li>
+    <li>FastAPI / VueJS</li>
+    <li>Suricata, Fail2Ban</li>
+    <li>Hyperledger Fabric (DLT)</li>
+    <li>OpenVPN</li>
+    <li>OpenSSH, OpenSSL</li>
+  </ul>
+  <p>Ces briques assurent :</p>
+  <ul>
+    <li>Transparence technologique</li>
+    <li>Auditabilité du code</li>
+    <li>Pérennité et absence de dépendance à un éditeur unique</li>
+  </ul>
+  <hr>
+
+  <h2>Conclusion</h2>
+  <p>DATIS se distingue comme une solution de sauvegarde :</p>
+  <ul>
+    <li>Distribuée, souveraine et hautement sécurisée</li>
+    <li>Plus résiliente que les approches centralisées</li>
+    <li>Alignée avec les enjeux actuels : ransomware, continuité de service, réduction énergétique</li>
+  </ul>
+  <p>Son modèle hybride entre technologies open-source, innovation académique et optimisation cryptographique en fait une solution originale sur le marché de la sauvegarde professionnelle et un sujet particulièrement pertinent pour une veille technologique sur la cybersécurité et la protection de données.</p>
+    </div>
   </section>
 </main>
 
@@ -54,5 +183,6 @@
       console.log('particles.js chargé');
     });
   </script>
+  <script src="js/veille_tabs.js"></script>
 </body>
 </html>
