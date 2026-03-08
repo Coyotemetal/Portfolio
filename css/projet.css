@@ -1,73 +1,238 @@
-* {
-    margin: 0;
-    padding: 0;
+/* =============================================
+   PROJET.CSS — Styles de la page Projet
+   ============================================= */
+
+/* ===== BASE BODY ===== */
+body#body_projet {
+    background-color: #0a0f1e;
+    font-family: 'Exo 2', sans-serif;
+    color: #e0e8ff;
+    min-height: 100vh;
 }
 
-#header_projet {
-    display: flex;
-    flex-direction: row;
-    height: 100px;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: #0d1b2a;
-    box-shadow: 0px 0px 0px 0px red;
-}
+/* ===== HEADER ===== */
+    #header_projet {
+        display: flex;
+        flex-direction: row;
+        height: 100px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: #0d1b2a;
+        box-shadow: 0px 0px 0px 0px red;
+    }
+    #header_projet p{
+        font-size: 50px;
+        color: white;
+    }
 
-#header_projet p {
-    font-size: 50px;
-    color: white;
-}
-
-.home {
-    position: relative;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    font-size: 50px;
-    color: #1c2fad;
-    transition: 0.5s;
-}
-
-.home:hover {
-    color: #5b67b5;
-}
-
+    .home {
+        position: relative;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        font-size: 50px;
+        color: #1c2fad;
+        transition: 0.5s;
+    }
+    .home:hover {
+        color: #5b67b5;
+    }
+/* ===== MAIN ===== */
 #body_projet main {
     width: 100%;
-    height: 100vh;
-    background-color: rgb(196, 200, 221);
-    padding: 15px;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0a0f1e 0%, #0d1b2a 50%, #0a1628 100%);
+    padding: 50px 60px;
+    height: auto;
 }
 
-#box_card {
+/* ===== SECTION WRAPPER ===== */
+.section_zone {
+    margin-bottom: 70px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.6s ease forwards;
+}
+.section_zone:nth-child(1) { animation-delay: 0.1s; }
+.section_zone:nth-child(3) { animation-delay: 0.3s; }
+.section_zone:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== SECTION HEADER ===== */
+.section_header {
     display: flex;
-    gap: 50px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.section_header .section_icon {
+    font-size: 28px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+.section_header h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+.section_line {
+    flex: 1;
+    height: 1px;
+    margin-left: 10px;
 }
 
+/* ===== COULEURS PAR SECTION ===== */
+
+/* École — bleu */
+.zone_ecole .section_icon {
+    background: rgba(0, 180, 255, 0.15);
+    color: #00b4ff;
+    border: 1px solid rgba(0, 180, 255, 0.3);
+}
+.zone_ecole h2               { color: #00b4ff; }
+.zone_ecole .section_line    { background: linear-gradient(90deg, #00b4ff, transparent); }
+.zone_ecole .sub_label       { border-color: #00b4ff; color: #00b4ff; }
+.zone_ecole .card_form::before        { background: rgba(0, 180, 255, 0.05); }
+.zone_ecole .card_form:hover          { box-shadow: 0 8px 30px rgba(0, 180, 255, 0.2); border-color: rgba(0, 180, 255, 0.4); }
+.zone_ecole .card_arrow               { color: #00b4ff; }
+
+/* Entreprise — orange */
+.zone_entreprise .section_icon {
+    background: rgba(255, 160, 0, 0.15);
+    color: #ffa000;
+    border: 1px solid rgba(255, 160, 0, 0.3);
+}
+.zone_entreprise h2               { color: #ffa000; }
+.zone_entreprise .section_line    { background: linear-gradient(90deg, #ffa000, transparent); }
+.zone_entreprise .sub_label       { border-color: #ffa000; color: #ffa000; }
+.zone_entreprise .card_form::before   { background: rgba(255, 160, 0, 0.05); }
+.zone_entreprise .card_form:hover     { box-shadow: 0 8px 30px rgba(255, 160, 0, 0.2); border-color: rgba(255, 160, 0, 0.4); }
+.zone_entreprise .card_arrow          { color: #ffa000; }
+
+/* Développement Personnel — vert */
+.zone_perso .section_icon {
+    background: rgba(0, 230, 150, 0.15);
+    color: #00e696;
+    border: 1px solid rgba(0, 230, 150, 0.3);
+}
+.zone_perso h2               { color: #00e696; }
+.zone_perso .section_line    { background: linear-gradient(90deg, #00e696, transparent); }
+.zone_perso .sub_label       { border-color: #00e696; color: #00e696; }
+.zone_perso .card_form::before        { background: rgba(0, 230, 150, 0.05); }
+.zone_perso .card_form:hover          { box-shadow: 0 8px 30px rgba(0, 230, 150, 0.2); border-color: rgba(0, 230, 150, 0.4); }
+.zone_perso .card_arrow               { color: #00e696; }
+
+/* ===== SOUS-CATÉGORIES ===== */
+.sub_category {
+    display: grid;
+}
+.sub_label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    padding-left: 12px;
+    border-left: 3px solid;
+    opacity: 0.7;
+}
+
+/* ===== CARDS GRID ===== */
+.cards_grid {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+/* ===== CARD ===== */
 .card_form {
-    padding: 5px;
+    padding: 0;
     height: 150px;
     width: 300px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px 2px #000;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
-    justify-content: center;
     align-items: center;
-    white-space: wrap;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
 }
-
+.card_form::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 10px;
+}
 .card_form:hover {
-    background-color: #859da7;
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
 }
+.card_form:hover::before { opacity: 1; }
 
+/* Image dans la carte */
+.card_img_wrap {
+    height: 100%;
+    width: 140px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
 .img_card {
-    height: 150px;
-    width: 200px;
+    height: 100px;
+    width: 120px;
+    object-fit: contain;
 }
 
+/* Texte dans la carte */
+.card_info {
+    padding: 15px;
+    flex: 1;
+}
 .text_card {
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 600;
+    color: #c8d8f0;
+    line-height: 1.5;
+}
+
+/* Flèche */
+.card_arrow {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-size: 11px;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+}
+.card_form:hover .card_arrow { opacity: 1; }
+
+/* ===== SÉPARATEUR ENTRE SECTIONS ===== */
+.section_divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+    margin-bottom: 70px;
 }

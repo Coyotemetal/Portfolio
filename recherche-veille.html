@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veille Technologique — Portfolio BTS SIO SISR</title>
+  <link rel="stylesheet" href="css/stylebis.css"/>
+  <link rel="stylesheet" href="css/recherche-veille.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+  <!-- Particules -->
+  <div id="particles-js"></div>
+
+  <!-- ── SIDEBAR ── -->
+  <nav class="sidebar">
+    <div class="nom-prenom-sidebar">
+      <strong>CÉZAR BENJAMIN</strong>
+    </div>
+    <h2>Menu</h2>
+    <ul>
+      <li><a href="index.html">Profil</a></li>
+      <li><a href="projet.html">Projets</a></li>
+      <li><a href="veille.html">Veille technologique</a></li>
+      <li><a href="recherche-veille.html" class="active">Recherche Veille</a></li>
+      <li><a href="epreuve.html">Epreuve E5</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── CONTENU ── -->
+  <div class="page-content">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <span class="page-badge">BTS SIO SISR</span>
+      <h1>Veille Technologique</h1>
+      <p>// Outil de veille automatisée — propulsé par IA + recherche web</p>
+      <p id="last-gen">Dernier rapport : <span id="last-gen-ts"></span></p>
+    </div>
+
+    <!-- 01 — CLÉ API -->
+    <div class="card">
+      <p class="section-label">01 — Clé API Anthropic</p>
+      <div class="api-row">
+        <input type="password" id="api-key" placeholder="sk-ant-api03-..." autocomplete="off"/>
+        <span id="api-status"></span>
+      </div>
+      <p class="api-hint">
+        Clé disponible sur <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+        — utilisée uniquement dans ton navigateur.
+      </p>
+    </div>
+
+    <!-- 02 — SUJETS -->
+    <div class="card">
+      <p class="section-label">02 — Sujets de veille</p>
+      <div class="topics-list" id="topics-list"></div>
+      <div class="add-row">
+        <input type="text" id="new-topic" placeholder="Ajouter un sujet (ex: WiFi 7, SD-WAN, Zero Trust...)"/>
+        <button class="btn btn-sm" onclick="addTopic()">+ Ajouter</button>
+      </div>
+    </div>
+
+    <!-- 03 — FRÉQUENCE -->
+    <div class="card">
+      <p class="section-label">03 — Fréquence du rapport</p>
+      <div class="freq-row">
+        <button class="freq-btn" id="freq-daily"  onclick="setFreq('daily')">Journalier</button>
+        <button class="freq-btn active" id="freq-weekly" onclick="setFreq('weekly')">Hebdomadaire</button>
+      </div>
+    </div>
+
+    <!-- GÉNÉRER -->
+    <div class="gen-section">
+      <button class="btn btn-primary" id="gen-btn" onclick="generateReport()" disabled>
+        <span>🚀</span> Générer le rapport
+      </button>
+      <p id="progress-msg"></p>
+    </div>
+
+    <hr class="divider" id="divider"/>
+
+    <!-- RAPPORTS -->
+    <div id="reports-section">
+      <div class="report-header">
+        <div class="report-date">Rapport du <strong id="report-date-label"></strong></div>
+        <span class="freq-tag" id="report-freq-tag">HEBDOMADAIRE</span>
+      </div>
+      <div id="reports-container"></div>
+    </div>
+
+    <!-- HISTORIQUE -->
+    <div id="history-section" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <p class="section-label" style="margin:0">Historique des rapports</p>
+        <button class="btn btn-sm" onclick="toggleHistory()" id="history-toggle">▼ Voir</button>
+      </div>
+      <div id="history-list" style="display:none"></div>
+    </div>
+
+  </div><!-- fin .page-content -->
+
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    // ── PARTICLES (si tu l'utilises déjà sur ton site) ──────────────────────
+    if (typeof particlesJS !== 'undefined') {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 40 },
+          color: { value: '#3b82f6' },
+          opacity: { value: 0.15 },
+          size: { value: 2 },
+          line_linked: { enable: true, distance: 150, color: '#3b82f6', opacity: 0.08, width: 1 },
+          move: { enable: true, speed: 1 }
+        },
+        interactivity: { events: { onhover: { enable: true, mode: 'repulse' } } }
+      });
+    }
+
+    // ── STATE ────────────────────────────────────────────────────────────────
+    const ICONS   = ["📡","🛡️","💡","🚀","⚙️","🌐","🔬","🔒"];
+    const COLORS  = ["#3b82f6","#7c3aed","#f59e0b","#10b981","#06b6d4","#ef4444","#8b5cf6","#ec4899"];
+    let topics = [
+      { id: 1, label: "FTTR",           query: "FTTR Fiber To The Room actualités réseau fibre 2025", icon: "📡", color: "#3b82f6" },
+      { id: 2, label: "Inspeere DATIS", query: "Inspeere DATIS sauvegarde souveraine actualités 2025", icon: "🛡️", color: "#7c3aed" },
+    ];
+    let freq = "weekly";
+    let history = [];
+    let historyOpen = false;
+
+    // ── API KEY ──────────────────────────────────────────────────────────────
+    document.getElementById("api-key").addEventListener("input", function () {
+      const val = this.value.trim();
+      const status = document.getElementById("api-status");
+      if (val.startsWith("sk-ant-") && val.length > 20) {
+        status.textContent = "✓ Format valide";
+        status.className = "status-ok";
+      } else if (val.length > 0) {
+        status.textContent = "✗ Format incorrect";
+        status.className = "status-err";
+      } else {
+        status.textContent = ""; status.className = "";
+      }
+      updateGenBtn();
+    });
+
+    // ── TOPICS ───────────────────────────────────────────────────────────────
+    function renderTopics() {
+      const list = document.getElementById("topics-list");
+      list.innerHTML = "";
+      if (topics.length === 0) {
+        list.innerHTML = '<span style="font-size:12px;color:#4a5a72;font-style:italic">Aucun sujet configuré</span>';
+        return;
+      }
+      topics.forEach(t => {
+        const chip = document.createElement("div");
+        chip.className = "topic-chip";
+        chip.style.borderColor = t.color + "55";
+        chip.innerHTML = `
+          <span>${t.icon}</span>
+          <span style="color:${t.color}">${t.label}</span>
+          <button onclick="removeTopic(${t.id})" title="Supprimer">×</button>`;
+        list.appendChild(chip);
+      });
+    }
+    function addTopic() {
+      const input = document.getElementById("new-topic");
+      const label = input.value.trim();
+      if (!label) return;
+      const idx = topics.length % ICONS.length;
+      topics.push({ id: Date.now(), label, query: `${label} actualités récentes technologie réseau sécurité`, icon: ICONS[idx], color: COLORS[idx] });
+      input.value = "";
+      renderTopics(); updateGenBtn();
+    }
+    function removeTopic(id) {
+      topics = topics.filter(t => t.id !== id);
+      renderTopics(); updateGenBtn();
+    }
+    document.getElementById("new-topic").addEventListener("keydown", e => { if (e.key === "Enter") addTopic(); });
+
+    // ── FREQ ─────────────────────────────────────────────────────────────────
+    function setFreq(f) {
+      freq = f;
+      document.getElementById("freq-daily").classList.toggle("active",  f === "daily");
+      document.getElementById("freq-weekly").classList.toggle("active", f === "weekly");
+    }
+
+    // ── GEN BTN ──────────────────────────────────────────────────────────────
+    function updateGenBtn() {
+      const key = document.getElementById("api-key").value.trim();
+      document.getElementById("gen-btn").disabled = !key.startsWith("sk-ant-") || topics.length === 0;
+    }
+
+    // ── GENERATE ─────────────────────────────────────────────────────────────
+    async function generateReport() {
+      const apiKey   = document.getElementById("api-key").value.trim();
+      const btn      = document.getElementById("gen-btn");
+      const progress = document.getElementById("progress-msg");
+      btn.disabled   = true;
+      btn.innerHTML  = '<span class="spinner"></span> Analyse en cours...';
+      progress.style.display = "block";
+
+      const freqLabel = freq === "daily" ? "aujourd'hui et les dernières 24 heures" : "cette semaine et les 7 derniers jours";
+      const freqTag   = freq === "daily" ? "JOURNALIER" : "HEBDOMADAIRE";
+      const results   = [];
+
+      for (let i = 0; i < topics.length; i++) {
+        const t = topics[i];
+        progress.textContent = `${t.icon} Recherche : ${t.label}  (${i+1}/${topics.length})...`;
+        const prompt = `Tu es un assistant de veille technologique pour un étudiant BTS SIO SISR français.
+Effectue une recherche web sur : "${t.query}". Concentre-toi sur les informations de ${freqLabel}.
+Rédige un compte rendu structuré :
+1. **Résumé** (2-3 phrases)
+2. **Actualités récentes** (3-5 points clés avec sources si disponibles)
+3. **Points techniques** (ce qu'un technicien réseau/sécurité doit retenir)
+4. **Tendances** (évolutions à surveiller)
+Sois précis, factuel, synthétique. Ton professionnel adapté BTS.`;
+        try {
+          const res  = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": apiKey,
+              "anthropic-version": "2023-06-01",
+              "anthropic-dangerous-direct-browser-access": "true"
+            },
+            body: JSON.stringify({
+              model: "claude-sonnet-4-20250514",
+              max_tokens: 1000,
+              tools: [{ type: "web_search_20250305", name: "web_search" }],
+              messages: [{ role: "user", content: prompt }]
+            })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error.message);
+          const text = data.content.filter(b => b.type === "text").map(b => b.text).join("\n");
+          results.push({ ...t, content: text });
+        } catch (err) {
+          results.push({ ...t, content: `❌ Erreur : ${err.message}` });
+        }
+      }
+
+      // ── RENDER ──────────────────────────────────────────────────────────
+      const container = document.getElementById("reports-container");
+      container.innerHTML = "";
+      const now     = new Date();
+      const dateStr = now.toLocaleDateString("fr-FR", { weekday:"long", day:"2-digit", month:"long", year:"numeric" });
+      document.getElementById("report-date-label").textContent = dateStr;
+      document.getElementById("report-freq-tag").textContent   = freqTag;
+      document.getElementById("reports-section").style.display = "block";
+      document.getElementById("divider").style.display         = "block";
+
+      results.forEach(r => {
+        const block = document.createElement("div");
+        block.className = "report-block";
+        const formatted = r.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        block.innerHTML = `
+          <div style="position:absolute;top:0;left:0;width:3px;height:100%;background:${r.color};border-radius:3px 0 0 3px"></div>
+          <div class="report-block-header">
+            <div class="report-block-title">
+              <span>${r.icon}</span>
+              <span style="color:${r.color}">${r.label}</span>
+            </div>
+            <button class="btn btn-sm" onclick="copyReport(this, ${r.id})">⎘ Copier</button>
+          </div>
+          <div class="report-content" data-id="${r.id}">${formatted}</div>`;
+        container.appendChild(block);
+      });
+
+      // ── HISTORY ─────────────────────────────────────────────────────────
+      const ts = now.toLocaleString("fr-FR");
+      history.unshift({ ts, freq: freqTag, topics: topics.map(t => t.label) });
+      if (history.length > 5) history.pop();
+      renderHistory();
+      const lg = document.getElementById("last-gen");
+      lg.style.display = "block";
+      document.getElementById("last-gen-ts").textContent = ts;
+
+      progress.style.display = "none";
+      btn.innerHTML = '<span>🚀</span> Générer le rapport';
+      btn.disabled  = false;
+      document.getElementById("reports-section").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ── COPY ─────────────────────────────────────────────────────────────────
+    window.copyReport = function (btn, id) {
+      const el = document.querySelector(`.report-content[data-id="${id}"]`);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        btn.textContent = "✓ Copié"; btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = "⎘ Copier"; btn.classList.remove("copied"); }, 2000);
+      });
+    };
+
+    // ── HISTORY ──────────────────────────────────────────────────────────────
+    function renderHistory() {
+      const section = document.getElementById("history-section");
+      const list    = document.getElementById("history-list");
+      if (history.length === 0) { section.style.display = "none"; return; }
+      section.style.display = "block";
+      list.innerHTML = history.map(h => `
+        <div class="history-item">
+          <div class="history-item-left">
+            <div class="history-ts">${h.ts}</div>
+            <div class="history-topics">${h.topics.join(" · ")}</div>
+          </div>
+          <span class="history-freq">${h.freq}</span>
+        </div>`).join("");
+    }
+    function toggleHistory() {
+      historyOpen = !historyOpen;
+      document.getElementById("history-list").style.display    = historyOpen ? "block" : "none";
+      document.getElementById("history-toggle").textContent = historyOpen ? "▲ Masquer" : "▼ Voir";
+    }
+
+    // ── INIT ─────────────────────────────────────────────────────────────────
+    renderTopics();
+  </script>
+</body>
+</html>

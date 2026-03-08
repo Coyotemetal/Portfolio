@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/stylebis.css">
+    <link rel="stylesheet" href="css/particule.css">
+    <link rel="stylesheet" href="css/theme3.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Thème 3 — Sécurité</title>
+</head>
+<body id="body_theme3">
+
+    <!-- HEADER -->
+    <header id="header_theme3">
+        <a href="index.html"><i class="fa-solid fa-microchip home"></i></a>
+        <canvas id="background"></canvas>
+        <script src="js/particule_header.js"></script>
+        <div class="header_title">
+            <span class="header_tag">THÈME 3</span>
+            <p>SÉCURITÉ</p>
+            <span class="header_sub">Caméras IP / Bodycams</span>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+
+        <!-- ══ RP1 ══ -->
+        <section class="rp_section rp1" id="rp1">
+
+            <div class="rp_header">
+                <div class="rp_badge">RP1</div>
+                <div class="rp_title_block">
+                    <h2>Réseau de Vidéoprotection Sécurisé</h2>
+                    <p class="rp_subtitle">VLAN 50 · Wi-Fi Cam-Wifi · Active Directory · GPO</p>
+                </div>
+                <div class="rp_icons">
+                    <i class="fa-solid fa-video"></i>
+                    <i class="fa-solid fa-wifi"></i>
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+            </div>
+
+            <!-- Contexte -->
+            <div class="bloc contexte">
+                <div class="bloc_label"><i class="fa-solid fa-circle-info"></i> Contexte</div>
+                <p>Le renforcement de la sécurité du stade nécessite le déploiement de <strong>caméras IP fixes</strong> et de <strong>Bodycams Wi-Fi</strong> portées par les agents. Les flux vidéo, potentiellement sensibles, doivent circuler sur un réseau totalement isolé pour garantir leur intégrité et leur confidentialité.</p>
+            </div>
+
+            <!-- Étapes -->
+            <div class="etapes_grid">
+
+                <!-- Étape 1 -->
+                <div class="etape_card">
+                    <div class="etape_number">01</div>
+                    <div class="etape_icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3>Segmentation réseau</h3>
+                    <p>Configuration du <span class="tag blue">VLAN 50</span> sur le switch Cisco Catalyst 3560 avec des adresses IP statiques réservées aux caméras fixes.</p>
+                    <div class="code_block">
+                        <div class="code_line"><span class="code_prompt">SW#</span> vlan 50</div>
+                        <div class="code_line"><span class="code_prompt">SW#</span> name VideoProtection</div>
+                        <div class="code_line"><span class="code_prompt">SW#</span> switchport access vlan 50</div>
+                    </div>
+                </div>
+
+                <!-- Étape 2 -->
+                <div class="etape_card">
+                    <div class="etape_number">02</div>
+                    <div class="etape_icon"><i class="fa-solid fa-wifi"></i></div>
+                    <h3>Déploiement Wi-Fi Bodycams</h3>
+                    <p>Création du SSID <span class="tag orange">Cam-Wifi</span> sur le VLAN 50, optimisé pour le transfert de fichiers volumineux. SSID masqué, WPA2-Enterprise.</p>
+                    <div class="wifi_params">
+                        <div class="param"><span>SSID</span><strong>Cam-Wifi</strong></div>
+                        <div class="param"><span>VLAN</span><strong>50</strong></div>
+                        <div class="param"><span>Auth</span><strong>WPA2</strong></div>
+                        <div class="param"><span>Bande</span><strong>5 GHz</strong></div>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div class="etape_card">
+                    <div class="etape_number">03</div>
+                    <div class="etape_icon"><i class="fa-solid fa-users-gear"></i></div>
+                    <h3>Configuration Active Directory</h3>
+                    <p>Création d'une <span class="tag green">OU « Sécurité »</span> et d'un groupe <span class="tag green">« Gardiens »</span> pour la gestion centralisée des droits des agents.</p>
+                    <div class="code_block">
+                        <div class="code_line"><span class="code_prompt">PS#</span> New-ADOrganizationalUnit 'Securite'</div>
+                        <div class="code_line"><span class="code_prompt">PS#</span> New-ADGroup 'Gardiens' -Security</div>
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div class="etape_card">
+                    <div class="etape_number">04</div>
+                    <div class="etape_icon"><i class="fa-solid fa-sliders"></i></div>
+                    <h3>Application de la GPO</h3>
+                    <p>GPO déployée sur l'OU Sécurité : montage du lecteur <span class="tag purple">V:</span> vers le NVR et lancement automatique du logiciel de vidéosurveillance.</p>
+                    <div class="gpo_list">
+                        <div class="gpo_item"><i class="fa-solid fa-check"></i> Lecteur V: → \\SRV-NVR\Video$</div>
+                        <div class="gpo_item"><i class="fa-solid fa-check"></i> Raccourci VMS sur le bureau</div>
+                        <div class="gpo_item"><i class="fa-solid fa-check"></i> Verrouillage 5 min d'inactivité</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Plan adressage -->
+            <div class="bloc adressage">
+                <div class="bloc_label"><i class="fa-solid fa-table"></i> Plan d'adressage — VLAN 50</div>
+                <div class="table_wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Équipement</th>
+                                <th>Adresse IP</th>
+                                <th>Masque</th>
+                                <th>Rôle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Passerelle VLAN 50</td><td class="ip">172.20.5.129</td><td>/25</td><td>Routeur inter-VLAN</td></tr>
+                            <tr><td>Caméra Entrée Nord</td><td class="ip">172.20.5.130</td><td>/25</td><td>Caméra fixe</td></tr>
+                            <tr><td>Caméra Entrée Sud</td><td class="ip">172.20.5.131</td><td>/25</td><td>Caméra fixe</td></tr>
+                            <tr><td>Caméra Terrain</td><td class="ip">172.20.5.132</td><td>/25</td><td>Caméra fixe</td></tr>
+                            <tr><td>Caméra Parking</td><td class="ip">172.20.5.133</td><td>/25</td><td>Caméra fixe</td></tr>
+                            <tr><td>Serveur NVR</td><td class="ip">172.20.5.140</td><td>/25</td><td>Enregistrement vidéo</td></tr>
+                            <tr><td>Borne Wi-Fi Cam-Wifi</td><td class="ip">172.20.5.141</td><td>/25</td><td>AP dédié Bodycams</td></tr>
+                            <tr><td>Bodycams (DHCP)</td><td class="ip">172.20.5.150–170</td><td>/25</td><td>Agents de sécurité</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Compétences RP1 -->
+            <div class="competences_row">
+                <div class="comp_badge"><i class="fa-solid fa-network-wired"></i> Isolation VLAN</div>
+                <div class="comp_badge"><i class="fa-solid fa-wifi"></i> Wi-Fi IoT</div>
+                <div class="comp_badge"><i class="fa-solid fa-server"></i> Active Directory</div>
+                <div class="comp_badge"><i class="fa-solid fa-gears"></i> GPO</div>
+                <div class="comp_badge"><i class="fa-solid fa-sitemap"></i> VLSM</div>
+            </div>
+
+        </section>
+
+        <div class="section_divider"></div>
+
+        <!-- ══ RP2 ══ -->
+        <section class="rp_section rp2" id="rp2">
+
+            <div class="rp_header">
+                <div class="rp_badge rp2_badge">RP2</div>
+                <div class="rp_title_block">
+                    <h2>Supervision Critique et Main Courante</h2>
+                    <p class="rp_subtitle">Nagios · GLPI · Zimbra</p>
+                </div>
+                <div class="rp_icons">
+                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-ticket"></i>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+            </div>
+
+            <!-- Contexte -->
+            <div class="bloc contexte rp2_contexte">
+                <div class="bloc_label"><i class="fa-solid fa-circle-info"></i> Contexte</div>
+                <p>Une caméra hors service représente une <strong>faille critique</strong> dans le dispositif de sûreté. Il est vital de superviser leur état en temps réel. Parallèlement, les agents transmettent leurs <strong>mains courantes</strong> de façon dématérialisée, et le cycle de vie du matériel doit être suivi.</p>
+            </div>
+
+            <!-- 3 outils -->
+            <div class="outils_grid">
+
+                <div class="outil_card nagios">
+                    <div class="outil_header">
+                        <div class="outil_icon"><i class="fa-solid fa-radar" style="font-size:22px"></i><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <div>
+                            <h3>Nagios</h3>
+                            <span class="outil_tag">Supervision</span>
+                        </div>
+                    </div>
+                    <p>Surveillance de chaque caméra du VLAN 50 via des tests <strong>Ping</strong> et vérification du flux <strong>RTSP</strong>. Alerte immédiate en cas de défaillance.</p>
+                    <div class="code_block">
+                        <div class="code_line"><span class="code_comment"># check_rtsp.sh</span></div>
+                        <div class="code_line">ffprobe -v quiet \</div>
+                        <div class="code_line">  "rtsp://$HOST:554/stream1"</div>
+                        <div class="code_line"><span class="code_comment"># exit 2 = CRITICAL</span></div>
+                    </div>
+                    <div class="outil_stats">
+                        <div class="stat"><span>Délai alerte</span><strong>&lt; 4 min</strong></div>
+                        <div class="stat"><span>Check interval</span><strong>2 min</strong></div>
+                        <div class="stat"><span>Protocoles</span><strong>Ping + RTSP</strong></div>
+                    </div>
+                </div>
+
+                <div class="outil_card glpi">
+                    <div class="outil_header">
+                        <div class="outil_icon"><i class="fa-solid fa-ticket"></i></div>
+                        <div>
+                            <h3>OCS / GLPI</h3>
+                            <span class="outil_tag">Gestion du parc</span>
+                        </div>
+                    </div>
+                    <p>Inventaire du parc caméras, suivi du cycle de vie et génération automatique de <strong>tickets d'incidents</strong> depuis les alertes Nagios via l'API REST.</p>
+                    <div class="flux_schema">
+                        <div class="flux_item nagios_item"><i class="fa-solid fa-bell"></i> Nagios</div>
+                        <div class="flux_arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="flux_item api_item"><i class="fa-solid fa-code"></i> API REST</div>
+                        <div class="flux_arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                        <div class="flux_item glpi_item"><i class="fa-solid fa-ticket"></i> Ticket GLPI</div>
+                    </div>
+                    <div class="outil_stats">
+                        <div class="stat"><span>Priorité ticket</span><strong>Très haute</strong></div>
+                        <div class="stat"><span>Création</span><strong>Automatique</strong></div>
+                    </div>
+                </div>
+
+                <div class="outil_card zimbra">
+                    <div class="outil_header">
+                        <div class="outil_icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <h3>Zimbra</h3>
+                            <span class="outil_tag">Messagerie</span>
+                        </div>
+                    </div>
+                    <p>Comptes de messagerie créés pour les agents de sécurité, permettant l'envoi des <strong>mains courantes</strong> horodatées au poste de commandement.</p>
+                    <div class="code_block">
+                        <div class="code_line"><span class="code_prompt">$</span> zmprov ca amartin@ \</div>
+                        <div class="code_line">  stadiumcompany.com \</div>
+                        <div class="code_line">  'MotDePasse2024'</div>
+                    </div>
+                    <div class="outil_stats">
+                        <div class="stat"><span>Traçabilité</span><strong>Horodatage</strong></div>
+                        <div class="stat"><span>Plateforme</span><strong>Debian 12</strong></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Test validation -->
+            <div class="bloc validation">
+                <div class="bloc_label"><i class="fa-solid fa-flask"></i> Test de validation — Simulation de panne</div>
+                <div class="test_steps">
+                    <div class="test_step">
+                        <div class="step_num">1</div>
+                        <div class="step_content">
+                            <strong>Déconnexion physique</strong> d'une caméra
+                            <span class="step_result ok"><i class="fa-solid fa-check"></i> Panne simulée</span>
+                        </div>
+                    </div>
+                    <div class="test_arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="test_step">
+                        <div class="step_num">2</div>
+                        <div class="step_content">
+                            <strong>Alerte Nagios</strong> déclenchée
+                            <span class="step_result ok"><i class="fa-solid fa-check"></i> 3 min 42s</span>
+                        </div>
+                    </div>
+                    <div class="test_arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="test_step">
+                        <div class="step_num">3</div>
+                        <div class="step_content">
+                            <strong>Ticket GLPI</strong> créé automatiquement
+                            <span class="step_result ok"><i class="fa-solid fa-check"></i> #0042</span>
+                        </div>
+                    </div>
+                    <div class="test_arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="test_step">
+                        <div class="step_num">4</div>
+                        <div class="step_content">
+                            <strong>E-mail Zimbra</strong> reçu
+                            <span class="step_result ok"><i class="fa-solid fa-check"></i> 4 min</span>
+                        </div>
+                    </div>
+                    <div class="test_arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                    <div class="test_step">
+                        <div class="step_num">5</div>
+                        <div class="step_content">
+                            <strong>Reconnexion</strong> caméra
+                            <span class="step_result ok"><i class="fa-solid fa-check"></i> RECOVERY + ticket fermé</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compétences RP2 -->
+            <div class="competences_row">
+                <div class="comp_badge rp2_comp"><i class="fa-solid fa-chart-line"></i> Supervision Nagios</div>
+                <div class="comp_badge rp2_comp"><i class="fa-solid fa-terminal"></i> Scripts Bash</div>
+                <div class="comp_badge rp2_comp"><i class="fa-solid fa-boxes-stacked"></i> GLPI Asset Mgmt</div>
+                <div class="comp_badge rp2_comp"><i class="fa-solid fa-envelope-open-text"></i> Zimbra</div>
+                <div class="comp_badge rp2_comp"><i class="fa-solid fa-plug"></i> API REST</div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
