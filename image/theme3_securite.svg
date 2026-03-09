@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Fond -->
+  <rect width="200" height="200" rx="18" fill="#0d1b2a"/>
+
+  <!-- Cercle de scanning animé -->
+  <circle cx="100" cy="85" r="52" fill="none" stroke="rgba(255,107,53,0.08)" stroke-width="1"/>
+  <circle cx="100" cy="85" r="52" fill="none" stroke="rgba(255,107,53,0.15)" stroke-width="1" stroke-dasharray="8,6">
+    <animateTransform attributeName="transform" type="rotate" from="0 100 85" to="360 100 85" dur="12s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="85" r="40" fill="none" stroke="rgba(255,107,53,0.1)" stroke-width="1" stroke-dasharray="4,8">
+    <animateTransform attributeName="transform" type="rotate" from="360 100 85" to="0 100 85" dur="8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- ══ CAMÉRA IP (centre) ══ -->
+  <!-- Corps caméra -->
+  <rect x="62" y="68" width="52" height="34" rx="6" fill="#1a3a5c" stroke="#ff6b35" stroke-width="2"/>
+  <!-- Objectif -->
+  <circle cx="88" cy="85" r="11" fill="#0a1628" stroke="#ff6b35" stroke-width="2"/>
+  <circle cx="88" cy="85" r="7" fill="#0d1b2a" stroke="rgba(255,107,53,0.4)" stroke-width="1.5"/>
+  <circle cx="88" cy="85" r="3.5" fill="#ff6b35" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Reflet objectif -->
+  <circle cx="85" cy="82" r="1.5" fill="white" opacity="0.3"/>
+  <!-- Trapèze côté droit (cône de vision) -->
+  <polygon points="114,74 130,62 130,108 114,102" fill="rgba(255,107,53,0.07)" stroke="rgba(255,107,53,0.25)" stroke-width="1"/>
+  <!-- LED enregistrement -->
+  <circle cx="107" cy="74" r="3" fill="#ff3333">
+    <animate attributeName="opacity" values="1;0.1;1" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Support caméra -->
+  <rect x="88" y="102" width="6" height="10" rx="2" fill="#1a3a5c" stroke="#ff6b35" stroke-width="1.5"/>
+  <rect x="82" y="110" width="18" height="4" rx="2" fill="#1a3a5c" stroke="#ff6b35" stroke-width="1.5"/>
+
+  <!-- ══ BODYCAM (gauche bas) ══ -->
+  <rect x="28" y="120" width="22" height="32" rx="5" fill="#1a3a5c" stroke="#00b4ff" stroke-width="1.5"/>
+  <rect x="32" y="124" width="14" height="9" rx="2" fill="#0a1628" stroke="rgba(0,180,255,0.4)" stroke-width="1"/>
+  <circle cx="39" cy="140" r="4" fill="#0a1628" stroke="#00b4ff" stroke-width="1.5"/>
+  <circle cx="39" cy="140" r="2" fill="#00b4ff" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.5s" begin="0.3s" repeatCount="indefinite"/>
+  </circle>
+  <rect x="33" y="146" width="12" height="2" rx="1" fill="rgba(0,180,255,0.3)"/>
+  <rect x="33" y="150" width="8" height="2" rx="1" fill="rgba(0,180,255,0.2)"/>
+
+  <!-- ══ BOUCLIER (droite bas) ══ -->
+  <path d="M151 118 L172 124 L172 142 Q162 154 151 158 Q140 154 130 142 L130 124 Z"
+        fill="rgba(0,230,150,0.08)" stroke="#00e696" stroke-width="1.8"/>
+  <polyline points="142,138 149,145 163,128"
+            fill="none" stroke="#00e696" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ══ VLAN TAG (haut gauche) ══ -->
+  <rect x="22" y="55" width="46" height="16" rx="4" fill="rgba(0,180,255,0.1)" stroke="rgba(0,180,255,0.3)" stroke-width="1"/>
+  <text x="45" y="67" text-anchor="middle" fill="#00b4ff" font-family="Courier New, monospace" font-size="9" font-weight="bold">VLAN 50</text>
+
+  <!-- Ligne de connexion VLAN → caméra -->
+  <line x1="68" y1="63" x2="75" y2="68" stroke="rgba(0,180,255,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- ══ NAGIOS PING (haut droit) ══ -->
+  <rect x="132" y="45" width="46" height="16" rx="4" fill="rgba(0,230,150,0.08)" stroke="rgba(0,230,150,0.3)" stroke-width="1"/>
+  <text x="155" y="57" text-anchor="middle" fill="#00e696" font-family="Courier New, monospace" font-size="8" font-weight="bold">NAGIOS</text>
+  <!-- Onde ping -->
+  <circle cx="155" cy="38" r="4" fill="none" stroke="rgba(0,230,150,0.5)" stroke-width="1.5">
+    <animate attributeName="r" values="4;10;4" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="155" cy="38" r="2.5" fill="#00e696" opacity="0.8"/>
+
+  <!-- ══ LABEL BAS ══ -->
+  <text x="100" y="182" text-anchor="middle" fill="#ff6b35" font-family="'Orbitron', Arial, sans-serif" font-size="8" font-weight="bold" letter-spacing="2">SÉCURITÉ</text>
+  <text x="100" y="194" text-anchor="middle" fill="#4a6a85" font-family="Arial, sans-serif" font-size="7" letter-spacing="1.5">CAMÉRAS IP · BODYCAMS</text>
+</svg>
