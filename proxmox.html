@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homelab Proxmox — Portfolio CÉZAR Benjamin</title>
+<style>
+/* ===========================================================
+   PALETTE & TYPOGRAPHIE — inspirée du theme3 du portfolio
+   =========================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Fond dark profond */
+  --bg-deep: #0a0e1a;
+  --bg-base: #0f1420;
+  --bg-card: #151b2c;
+  --bg-elev: #1a2236;
+  --bg-soft: #1e2740;
+
+  /* Bordures */
+  --border: rgba(148, 163, 184, 0.12);
+  --border-strong: rgba(148, 163, 184, 0.22);
+
+  /* Texte */
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  /* Accents néon */
+  --neon-cyan: #22d3ee;
+  --neon-violet: #a855f7;
+  --neon-pink: #ec4899;
+  --neon-green: #10b981;
+  --neon-orange: #f97316;
+  --neon-yellow: #eab308;
+  --neon-red: #ef4444;
+
+  /* Couleurs sémantiques */
+  --c-lan: #22d3ee;
+  --c-dmz: #f97316;
+  --c-opt2: #10b981;
+  --c-pfsense: #ef4444;
+  --c-proxmox: #a855f7;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Atmosphère de fond — gradients subtils */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 800px 600px at 15% 10%, rgba(168, 85, 247, 0.12), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 85% 30%, rgba(34, 211, 238, 0.08), transparent 55%),
+    radial-gradient(ellipse 600px 400px at 50% 80%, rgba(236, 72, 153, 0.06), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grain subtil */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+main { position: relative; z-index: 1; }
+
+/* ===========================================================
+   NAVIGATION — bandeau du portfolio
+   =========================================================== */
+.portfolio-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.portfolio-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.brand .name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+.brand .role {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+.nav-links a {
+  display: block;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.nav-links a:hover {
+  color: var(--neon-cyan);
+  background: rgba(34, 211, 238, 0.06);
+}
+
+/* ===========================================================
+   HERO
+   =========================================================== */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px 60px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 100px;
+  background: rgba(34, 211, 238, 0.05);
+  margin-bottom: 24px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--neon-cyan);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero-category {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 22px;
+  color: var(--text-muted);
+  font-weight: 400;
+  max-width: 760px;
+  line-height: 1.4;
+}
+
+.hero-meta {
+  margin-top: 40px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hero-meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.hero-meta-value {
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 500;
+}
+.hero-meta-value.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--neon-cyan);
+}
+
+/* ===========================================================
+   SECTIONS RP (Réalisation Professionnelle)
+   =========================================================== */
+.rp-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px;
+  position: relative;
+}
+
+.rp-marker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--neon-violet);
+  margin-bottom: 12px;
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.06);
+}
+.rp-marker.cyan {
+  color: var(--neon-cyan);
+  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.06);
+}
+.rp-marker.green {
+  color: var(--neon-green);
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.rp-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.rp-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  letter-spacing: 0.04em;
+}
+
+.rp-context {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--neon-violet);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin-bottom: 50px;
+}
+.rp-context.cyan { border-left-color: var(--neon-cyan); }
+.rp-context.green { border-left-color: var(--neon-green); }
+
+.rp-context-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--neon-violet);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.rp-context.cyan .rp-context-label { color: var(--neon-cyan); }
+.rp-context.green .rp-context-label { color: var(--neon-green); }
+
+.rp-context p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.rp-context strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ===========================================================
+   ÉTAPES NUMÉROTÉES (01, 02, 03…)
+   =========================================================== */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.step:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+.step::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-violet), transparent);
+  opacity: 0.6;
+}
+.step.cyan::before { background: linear-gradient(90deg, var(--neon-cyan), transparent); }
+.step.green::before { background: linear-gradient(90deg, var(--neon-green), transparent); }
+.step.orange::before { background: linear-gradient(90deg, var(--neon-orange), transparent); }
+.step.pink::before { background: linear-gradient(90deg, var(--neon-pink), transparent); }
+.step.red::before { background: linear-gradient(90deg, var(--neon-red), transparent); }
+
+.step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--neon-violet);
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: -0.04em;
+  opacity: 0.85;
+}
+.step.cyan .step-num { color: var(--neon-cyan); }
+.step.green .step-num { color: var(--neon-green); }
+.step.orange .step-num { color: var(--neon-orange); }
+.step.pink .step-num { color: var(--neon-pink); }
+.step.red .step-num { color: var(--neon-red); }
+
+.step h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.step p {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.step p strong { color: var(--text); font-weight: 600; }
+
+/* Bloc de code dans une étape */
+.code-block {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: var(--neon-cyan);
+  margin-top: 14px;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.6;
+}
+.code-block .comment { color: var(--text-dim); }
+.code-block .keyword { color: var(--neon-pink); }
+.code-block .string { color: var(--neon-yellow); }
+
+/* Métriques mini-cards */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+.metric {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.metric-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.metric-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neon-cyan);
+}
+
+/* ===========================================================
+   TABLEAUX — plan d'adressage
+   =========================================================== */
+.table-section {
+  margin: 50px 0 30px;
+}
+.table-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.table-title::before {
+  content: '';
+  flex: 0 0 24px;
+  height: 1px;
+  background: var(--border-strong);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+}
+.data-table thead {
+  background: var(--bg-elev);
+}
+.data-table th {
+  text-align: left;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--neon-cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-strong);
+}
+.data-table td {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+.data-table tbody tr:hover { background: var(--bg-elev); }
+.data-table td.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--neon-cyan);
+}
+.data-table td.tag-cell { white-space: nowrap; }
+
+/* ===========================================================
+   BADGES / TAGS
+   =========================================================== */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 100px;
+  border: 1px solid;
+  letter-spacing: 0.04em;
+}
+.tag::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tag-cyan { color: var(--neon-cyan); border-color: rgba(34, 211, 238, 0.3); background: rgba(34, 211, 238, 0.06); }
+.tag-violet { color: var(--neon-violet); border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.06); }
+.tag-green { color: var(--neon-green); border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.06); }
+.tag-orange { color: var(--neon-orange); border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.06); }
+.tag-pink { color: var(--neon-pink); border-color: rgba(236, 72, 153, 0.3); background: rgba(236, 72, 153, 0.06); }
+.tag-red { color: var(--neon-red); border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.06); }
+.tag-yellow { color: var(--neon-yellow); border-color: rgba(234, 179, 8, 0.3); background: rgba(234, 179, 8, 0.06); }
+
+/* ===========================================================
+   SCHÉMA SVG
+   =========================================================== */
+.schema-wrapper {
+  margin: 50px 0;
+  padding: 30px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.schema-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-violet), var(--neon-pink));
+  opacity: 0.7;
+}
+.schema-wrapper svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 6px;
+}
+.schema-caption {
+  text-align: center;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ===========================================================
+   FLUX (chaîne d'alerting)
+   =========================================================== */
+.flow-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 28px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 30px 0;
+}
+.flow-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  padding: 10px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--text);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.flow-step:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.2);
+}
+.flow-arrow {
+  color: var(--neon-cyan);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ===========================================================
+   SERVICE CARDS — pour les VM / CT
+   =========================================================== */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin: 30px 0;
+}
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+  position: relative;
+  transition: all 0.25s ease;
+}
+.service-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+.service-card[data-type="vm"]::before {
+  content: 'VM';
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  background: rgba(34, 211, 238, 0.08);
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+}
+.service-card[data-type="ct"]::before {
+  content: 'CT';
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--neon-orange);
+  background: rgba(249, 115, 22, 0.08);
+  padding: 3px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+}
+.service-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.service-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.service-ip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--neon-cyan);
+  background: var(--bg-deep);
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.service-desc {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+/* ===========================================================
+   MATRICE DE FILTRAGE
+   =========================================================== */
+.matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 4px;
+  margin: 20px 0;
+}
+.matrix th, .matrix td {
+  padding: 12px;
+  text-align: center;
+  font-size: 13px;
+  border-radius: 4px;
+}
+.matrix th {
+  background: var(--bg-elev);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.matrix td {
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.matrix td.allow { color: var(--neon-green); border-color: rgba(16, 185, 129, 0.25); background: rgba(16, 185, 129, 0.04); }
+.matrix td.deny { color: var(--neon-red); border-color: rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.04); }
+.matrix td.self { color: var(--text-dim); }
+.matrix td.mixed { color: var(--neon-yellow); border-color: rgba(234, 179, 8, 0.25); background: rgba(234, 179, 8, 0.04); }
+
+/* ===========================================================
+   FOOTER
+   =========================================================== */
+.page-footer {
+  max-width: 1280px;
+  margin: 60px auto 0;
+  padding: 40px 32px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.page-footer p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+.page-footer a {
+  color: var(--neon-cyan);
+  text-decoration: none;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.page-footer a:hover { text-decoration: underline; }
+
+/* ===========================================================
+   ANIMATIONS
+   =========================================================== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero, .rp-section, .schema-wrapper {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+/* ===========================================================
+   RESPONSIVE
+   =========================================================== */
+@media (max-width: 768px) {
+  .hero { padding: 60px 20px 40px; }
+  .rp-section { padding: 60px 20px; }
+  .portfolio-nav-inner { padding: 12px 20px; }
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 10px; font-size: 12px; }
+  .hero-meta { gap: 20px; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 12px; }
+  .schema-wrapper { padding: 16px; }
+  .matrix { font-size: 11px; }
+  .matrix th, .matrix td { padding: 8px 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===========================================================
+     NAVIGATION DU PORTFOLIO
+     =========================================================== -->
+<nav class="portfolio-nav">
+  <div class="portfolio-nav-inner">
+    <div class="brand">
+      <div class="name">CÉZAR BENJAMIN</div>
+      <div class="role">Portfolio BTS SIO SISR</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Profil</a></li>
+      <li><a href="projet.html">Projets</a></li>
+      <li><a href="veille.html">Veille technologique</a></li>
+      <li><a href="recherche-veille.html">Recherche Veille</a></li>
+      <li><a href="epreuve.html">Épreuve E5</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===========================================================
+     HERO
+     =========================================================== -->
+<header class="hero">
+  <div class="hero-eyebrow">Développement personnel · Homelab</div>
+  <div class="hero-category">Infrastructure virtualisée</div>
+  <h1>Homelab Proxmox</h1>
+  <p class="hero-subtitle">Conception et exploitation d'un environnement de virtualisation complet — segmentation réseau, services métier, supervision et accès distant sécurisé.</p>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Hyperviseur</span>
+      <span class="hero-meta-value">Proxmox VE</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Nœud</span>
+      <span class="hero-meta-value mono">cezar</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Domaine AD</span>
+      <span class="hero-meta-value mono">16art.coy</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Zones réseau</span>
+      <span class="hero-meta-value">3 (LAN · DMZ · OPT2)</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===========================================================
+     RP1 — ARCHITECTURE & RÉSEAU
+     =========================================================== -->
+<section class="rp-section" id="rp1">
+  <span class="rp-marker cyan">RP1</span>
+  <h2 class="rp-title">Architecture réseau segmentée</h2>
+  <p class="rp-subtitle">Proxmox VE · pfSense · DMZ · VLAN · Routage inter-zones</p>
+
+  <div class="rp-context cyan">
+    <div class="rp-context-label">Contexte</div>
+    <p>L'objectif est de construire une infrastructure professionnelle à petite échelle qui reproduise les principes d'un environnement d'entreprise : <strong>cloisonnement réseau</strong>, <strong>centralisation du filtrage</strong>, <strong>isolation des services exposables</strong>. L'ensemble repose sur un seul serveur physique, un Shuttle DH32U, qui héberge à la fois le pare-feu et tous les services métier.</p>
+  </div>
+
+  <!-- Schéma réseau -->
+  <div class="schema-wrapper">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1350" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="proxmox-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="100%" stop-color="#ddd6fe"/>
+    </linearGradient>
+    <linearGradient id="lan-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="dmz-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="100%" stop-color="#fdba74"/>
+    </linearGradient>
+    <linearGradient id="opt2-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="100%" stop-color="#a7f3d0"/>
+    </linearGradient>
+    <linearGradient id="internet-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e5e7eb"/>
+      <stop offset="100%" stop-color="#d1d5db"/>
+    </linearGradient>
+    <linearGradient id="pfsense-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <linearGradient id="vm-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="ct-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <!-- Filter ombre portée -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.2"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Marqueur flèche -->
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Fond -->
+  <rect width="1800" height="1350" fill="url(#bg-grad)"/>
+
+  <!-- Titre -->
+  <text x="900" y="45" text-anchor="middle" font-size="28" font-weight="700" fill="#1e293b">Schéma de l'infrastructure réseau — Homelab Proxmox</text>
+  <text x="900" y="72" text-anchor="middle" font-size="14" fill="#64748b">Nœud : cezar — Domaine AD : 16art.coy</text>
+
+  <!-- ========== INTERNET ========== -->
+  <g filter="url(#shadow)">
+    <ellipse cx="900" cy="125" rx="110" ry="40" fill="url(#internet-grad)" stroke="#9ca3af" stroke-width="2"/>
+    <text x="900" y="120" text-anchor="middle" font-size="20" font-weight="700" fill="#374151">🌐 Internet</text>
+    <text x="900" y="142" text-anchor="middle" font-size="12" fill="#6b7280">Fibre optique</text>
+  </g>
+
+  <!-- Flèche Internet -> Freebox -->
+  <line x1="900" y1="165" x2="900" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ========== FREEBOX ========== -->
+  <g filter="url(#shadow)">
+    <rect x="770" y="205" width="260" height="80" rx="10" fill="#ffffff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <rect x="770" y="205" width="260" height="28" rx="10" fill="#1d4ed8"/>
+    <rect x="770" y="220" width="260" height="13" fill="#1d4ed8"/>
+    <text x="900" y="225" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">📡 Freebox Pop</text>
+    <text x="900" y="255" text-anchor="middle" font-size="12" fill="#334155">LAN : 192.168.1.0/24</text>
+    <text x="900" y="273" text-anchor="middle" font-size="12" fill="#334155">Passerelle : 192.168.1.1 — DMZ → pfSense</text>
+  </g>
+
+  <!-- Flèche Freebox -> Proxmox -->
+  <line x1="900" y1="285" x2="900" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="915" y="312" font-size="11" fill="#64748b" font-style="italic">DMZ Freebox</text>
+
+  <!-- ========== BOX PROXMOX ========== -->
+  <g>
+    <rect x="60" y="335" width="1680" height="985" rx="15" fill="url(#proxmox-grad)" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8,4"/>
+    <rect x="60" y="335" width="420" height="45" rx="15" fill="#7c3aed"/>
+    <rect x="60" y="360" width="420" height="20" fill="#7c3aed"/>
+    <text x="82" y="365" font-size="18" font-weight="700" fill="#ffffff">🖥  Serveur Proxmox — Shuttle DH32U (nœud : cezar)</text>
+    <text x="1720" y="365" text-anchor="end" font-size="12" fill="#ffffff" font-style="italic">Hyperviseur — IP .250 sur chaque réseau</text>
+  </g>
+
+  <!-- ========== PFSENSE VM ========== -->
+  <g filter="url(#shadow)">
+    <rect x="760" y="410" width="280" height="130" rx="10" fill="url(#pfsense-grad)" stroke="#7f1d1d" stroke-width="2.5"/>
+    <text x="900" y="445" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">🛡  pfSense</text>
+    <text x="900" y="468" text-anchor="middle" font-size="12" fill="#fecaca">VM — Pare-feu / Routeur</text>
+    <line x1="780" y1="480" x2="1020" y2="480" stroke="#fca5a5" stroke-width="1"/>
+    <text x="900" y="500" text-anchor="middle" font-size="11" fill="#ffffff" font-weight="600">WAN : 192.168.1.251</text>
+    <text x="900" y="517" text-anchor="middle" font-size="11" fill="#ffffff">LAN · OPT1 (DMZ) · OPT2</text>
+    <text x="900" y="533" text-anchor="middle" font-size="10" fill="#fecaca" font-style="italic">Règles de filtrage inter-zones</text>
+  </g>
+
+  <!-- Lignes pfSense -> 3 réseaux -->
+  <!-- LAN (gauche) -->
+  <line x1="785" y1="540" x2="400" y2="610" stroke="#2563eb" stroke-width="3"/>
+  <text x="530" y="565" font-size="12" fill="#1e40af" font-weight="700">LAN : 192.168.10.1</text>
+  <!-- DMZ (droite) -->
+  <line x1="1015" y1="540" x2="1420" y2="610" stroke="#ea580c" stroke-width="3"/>
+  <text x="1180" y="565" font-size="12" fill="#9a3412" font-weight="700">OPT1 (DMZ) : 10.10.10.1</text>
+  <!-- OPT2 (bas) -->
+  <line x1="900" y1="540" x2="900" y2="1160" stroke="#059669" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="915" y="1145" font-size="11" fill="#065f46" font-weight="700">OPT2 : 172.20.1.1</text>
+
+  <!-- ========== ZONE LAN ========== -->
+  <g>
+    <rect x="90" y="605" width="740" height="545" rx="12" fill="url(#lan-grad)" stroke="#2563eb" stroke-width="2.5"/>
+    <rect x="90" y="605" width="240" height="38" rx="12" fill="#2563eb"/>
+    <rect x="90" y="625" width="240" height="18" fill="#2563eb"/>
+    <text x="110" y="631" font-size="15" font-weight="700" fill="#ffffff">🔷  LAN — 192.168.10.0/24</text>
+
+    <!-- Win-SRV -->
+    <g filter="url(#shadow)">
+      <rect x="115" y="665" width="220" height="95" rx="8" fill="url(#vm-grad)" stroke="#1e40af" stroke-width="1.5"/>
+      <rect x="115" y="665" width="220" height="24" rx="8" fill="#1e40af"/>
+      <rect x="115" y="680" width="220" height="9" fill="#1e40af"/>
+      <text x="225" y="683" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">🪟 Win-SRV  [VM]</text>
+      <text x="225" y="708" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.14</text>
+      <text x="225" y="725" text-anchor="middle" font-size="10" fill="#4b5563">Windows Server 2022</text>
+      <text x="225" y="740" text-anchor="middle" font-size="10" fill="#4b5563">AD DS · DNS · DHCP</text>
+      <text x="225" y="754" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Domaine : 16art.coy</text>
+    </g>
+
+    <!-- GLPI -->
+    <g filter="url(#shadow)">
+      <rect x="355" y="665" width="220" height="95" rx="8" fill="url(#vm-grad)" stroke="#1e40af" stroke-width="1.5"/>
+      <rect x="355" y="665" width="220" height="24" rx="8" fill="#1e40af"/>
+      <rect x="355" y="680" width="220" height="9" fill="#1e40af"/>
+      <text x="465" y="683" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">🎫 GLPI  [VM]</text>
+      <text x="465" y="708" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.15</text>
+      <text x="465" y="725" text-anchor="middle" font-size="10" fill="#4b5563">Debian 12</text>
+      <text x="465" y="740" text-anchor="middle" font-size="10" fill="#4b5563">Gestion de parc</text>
+      <text x="465" y="754" text-anchor="middle" font-size="10" fill="#4b5563">Tickets (mail → ticket)</text>
+    </g>
+
+    <!-- Zimbra -->
+    <g filter="url(#shadow)">
+      <rect x="595" y="665" width="220" height="95" rx="8" fill="url(#vm-grad)" stroke="#1e40af" stroke-width="1.5"/>
+      <rect x="595" y="665" width="220" height="24" rx="8" fill="#1e40af"/>
+      <rect x="595" y="680" width="220" height="9" fill="#1e40af"/>
+      <text x="705" y="683" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">✉  Zimbra  [VM]</text>
+      <text x="705" y="708" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.50</text>
+      <text x="705" y="725" text-anchor="middle" font-size="10" fill="#4b5563">Ubuntu — Serveur mail</text>
+      <text x="705" y="740" text-anchor="middle" font-size="10" fill="#4b5563">SMTP · IMAP local</text>
+      <text x="705" y="754" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Relais Zabbix → GLPI</text>
+    </g>
+
+    <!-- Win-User -->
+    <g filter="url(#shadow)">
+      <rect x="115" y="775" width="220" height="90" rx="8" fill="url(#vm-grad)" stroke="#1e40af" stroke-width="1.5"/>
+      <rect x="115" y="775" width="220" height="24" rx="8" fill="#1e40af"/>
+      <rect x="115" y="790" width="220" height="9" fill="#1e40af"/>
+      <text x="225" y="793" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">💻 Win-User  [VM]</text>
+      <text x="225" y="818" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">LAN : DHCP · DMZ : 10.10.10.100</text>
+      <text x="225" y="834" text-anchor="middle" font-size="10" fill="#4b5563">Windows 10/11</text>
+      <text x="225" y="848" text-anchor="middle" font-size="10" fill="#4b5563">Client joint au domaine · 2 NIC</text>
+      <text x="225" y="862" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Poste de test / admin</text>
+    </g>
+
+    <!-- Zabbix CT -->
+    <g filter="url(#shadow)">
+      <rect x="355" y="775" width="220" height="90" rx="8" fill="url(#ct-grad)" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="355" y="775" width="220" height="24" rx="8" fill="#b45309"/>
+      <rect x="355" y="790" width="220" height="9" fill="#b45309"/>
+      <text x="465" y="793" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">📊 Zabbix  [CT]</text>
+      <text x="465" y="818" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.20</text>
+      <text x="465" y="834" text-anchor="middle" font-size="10" fill="#4b5563">LXC Debian 12</text>
+      <text x="465" y="848" text-anchor="middle" font-size="10" fill="#4b5563">Supervision infra</text>
+      <text x="465" y="862" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Alertes → mail</text>
+    </g>
+
+    <!-- Wazuh CT -->
+    <g filter="url(#shadow)">
+      <rect x="595" y="775" width="220" height="90" rx="8" fill="url(#ct-grad)" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="595" y="775" width="220" height="24" rx="8" fill="#b45309"/>
+      <rect x="595" y="790" width="220" height="9" fill="#b45309"/>
+      <text x="705" y="793" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">🔒 Wazuh  [CT]</text>
+      <text x="705" y="818" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.30</text>
+      <text x="705" y="834" text-anchor="middle" font-size="10" fill="#4b5563">LXC Debian 12 — SIEM</text>
+      <text x="705" y="848" text-anchor="middle" font-size="10" fill="#4b5563">LDAP → AD 16art.coy</text>
+      <text x="705" y="862" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Agents sur VMs/CT</text>
+    </g>
+
+    <!-- Grafana CT -->
+    <g filter="url(#shadow)">
+      <rect x="115" y="880" width="220" height="90" rx="8" fill="url(#ct-grad)" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="115" y="880" width="220" height="24" rx="8" fill="#b45309"/>
+      <rect x="115" y="895" width="220" height="9" fill="#b45309"/>
+      <text x="225" y="898" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">📈 Grafana  [CT]</text>
+      <text x="225" y="923" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.200</text>
+      <text x="225" y="939" text-anchor="middle" font-size="10" fill="#4b5563">LXC Debian 12</text>
+      <text x="225" y="953" text-anchor="middle" font-size="10" fill="#4b5563">Dashboards visuels</text>
+      <text x="225" y="967" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Source : Zabbix</text>
+    </g>
+
+    <!-- Tailscale CT -->
+    <g filter="url(#shadow)">
+      <rect x="355" y="880" width="220" height="90" rx="8" fill="url(#ct-grad)" stroke="#b45309" stroke-width="1.5"/>
+      <rect x="355" y="880" width="220" height="24" rx="8" fill="#b45309"/>
+      <rect x="355" y="895" width="220" height="9" fill="#b45309"/>
+      <text x="465" y="898" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">🔑 Tailscale  [CT]</text>
+      <text x="465" y="923" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">192.168.10.199</text>
+      <text x="465" y="939" text-anchor="middle" font-size="10" fill="#4b5563">LXC Debian 12 — VPN</text>
+      <text x="465" y="953" text-anchor="middle" font-size="10" fill="#4b5563">Subnet router</text>
+      <text x="465" y="967" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Accès distant au LAN</text>
+    </g>
+
+    <!-- PC Physique -->
+    <g filter="url(#shadow)">
+      <rect x="595" y="880" width="220" height="90" rx="8" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <rect x="595" y="880" width="220" height="24" rx="8" fill="#0369a1"/>
+      <rect x="595" y="895" width="220" height="9" fill="#0369a1"/>
+      <text x="705" y="898" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">🖥  PC Physique</text>
+      <text x="705" y="923" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">DHCP</text>
+      <text x="705" y="939" text-anchor="middle" font-size="10" fill="#4b5563">Poste de travail admin</text>
+      <text x="705" y="953" text-anchor="middle" font-size="10" fill="#4b5563">Gestion Proxmox / pfSense</text>
+      <text x="705" y="967" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Hors serveur</text>
+    </g>
+
+    <!-- Interface Proxmox LAN -->
+    <g filter="url(#shadow)">
+      <rect x="115" y="985" width="700" height="55" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="465" y="1007" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">⚙  Interface Proxmox — Administration</text>
+      <text x="465" y="1028" text-anchor="middle" font-size="11" fill="#4b5563">192.168.10.250  ·  https://192.168.10.250:8006</text>
+    </g>
+
+    <!-- Flux Zabbix -> Zimbra -> GLPI (propres) -->
+    <!-- Zabbix (465,775) -> Zimbra (705,760) -->
+    <path d="M 575 800 C 620 790 660 775 705 760" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+    <!-- Zimbra (595,720) -> GLPI (465,720) -->
+    <path d="M 595 720 C 540 720 510 720 470 720" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+    <text x="465" y="1077" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Flux automatisé : Zabbix → Zimbra → GLPI (ticket auto)</text>
+    <text x="465" y="1095" text-anchor="middle" font-size="10" fill="#0369a1" font-style="italic">Une panne détectée par Zabbix devient un ticket GLPI sans intervention manuelle</text>
+  </g>
+
+  <!-- ========== ZONE DMZ ========== -->
+  <g>
+    <rect x="870" y="605" width="500" height="250" rx="12" fill="url(#dmz-grad)" stroke="#ea580c" stroke-width="2.5"/>
+    <rect x="870" y="605" width="260" height="38" rx="12" fill="#ea580c"/>
+    <rect x="870" y="625" width="260" height="18" fill="#ea580c"/>
+    <text x="890" y="631" font-size="15" font-weight="700" fill="#ffffff">🟧  OPT1 — DMZ — 10.10.10.0/24</text>
+
+    <!-- Win-User (interface DMZ) -->
+    <g filter="url(#shadow)">
+      <rect x="895" y="665" width="220" height="95" rx="8" fill="url(#vm-grad)" stroke="#9a3412" stroke-width="1.5"/>
+      <rect x="895" y="665" width="220" height="24" rx="8" fill="#9a3412"/>
+      <rect x="895" y="680" width="220" height="9" fill="#9a3412"/>
+      <text x="1005" y="683" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">💻 Win-User  [interface 2]</text>
+      <text x="1005" y="708" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">10.10.10.100</text>
+      <text x="1005" y="724" text-anchor="middle" font-size="10" fill="#4b5563">NIC secondaire</text>
+      <text x="1005" y="738" text-anchor="middle" font-size="10" fill="#4b5563">Accès contrôlé à la DMZ</text>
+      <text x="1005" y="752" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Tests / isolation</text>
+    </g>
+
+    <!-- Zone libre DMZ -->
+    <g>
+      <rect x="1135" y="665" width="220" height="95" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <text x="1245" y="697" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">🗃  Emplacement libre</text>
+      <text x="1245" y="722" text-anchor="middle" font-size="10" fill="#7c2d12">Réservé pour services</text>
+      <text x="1245" y="738" text-anchor="middle" font-size="10" fill="#7c2d12">exposés (Zimbra déplacé</text>
+      <text x="1245" y="754" text-anchor="middle" font-size="10" fill="#7c2d12">sur LAN pour usage local)</text>
+    </g>
+
+    <!-- Proxmox DMZ -->
+    <g filter="url(#shadow)">
+      <rect x="895" y="775" width="460" height="55" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="1125" y="797" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">⚙  Interface Proxmox — DMZ</text>
+      <text x="1125" y="818" text-anchor="middle" font-size="11" fill="#4b5563">10.10.10.250</text>
+    </g>
+  </g>
+
+  <!-- ========== ZONE OPT2 - THAÏS ========== -->
+  <g>
+    <rect x="1410" y="605" width="320" height="545" rx="12" fill="url(#opt2-grad)" stroke="#059669" stroke-width="2.5"/>
+    <rect x="1410" y="605" width="320" height="38" rx="12" fill="#059669"/>
+    <rect x="1410" y="625" width="320" height="18" fill="#059669"/>
+    <text x="1430" y="631" font-size="14" font-weight="700" fill="#ffffff">🟢  OPT2 — 172.20.1.0/24</text>
+
+    <text x="1570" y="678" text-anchor="middle" font-size="12" font-weight="700" fill="#065f46">Réseau utilisateur distant</text>
+    <text x="1570" y="698" text-anchor="middle" font-size="11" fill="#047857">Passerelle : 172.20.1.1</text>
+
+    <!-- Poste Thaïs -->
+    <g filter="url(#shadow)">
+      <rect x="1435" y="725" width="270" height="100" rx="8" fill="url(#vm-grad)" stroke="#065f46" stroke-width="1.5"/>
+      <rect x="1435" y="725" width="270" height="24" rx="8" fill="#065f46"/>
+      <rect x="1435" y="740" width="270" height="9" fill="#065f46"/>
+      <text x="1570" y="743" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">👤 Poste Thaïs</text>
+      <text x="1570" y="770" text-anchor="middle" font-size="11" fill="#1f2937" font-weight="600">172.20.1.x — DHCP</text>
+      <text x="1570" y="787" text-anchor="middle" font-size="10" fill="#4b5563">Utilisateur supplémentaire</text>
+      <text x="1570" y="802" text-anchor="middle" font-size="10" fill="#4b5563">Isolation réseau stricte</text>
+      <text x="1570" y="817" text-anchor="middle" font-size="10" fill="#4b5563" font-style="italic">Internet uniquement</text>
+    </g>
+
+    <!-- Encadré règles -->
+    <g>
+      <rect x="1435" y="855" width="270" height="130" rx="8" fill="#ecfdf5" stroke="#047857" stroke-width="1.2" stroke-dasharray="4,2"/>
+      <text x="1570" y="878" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">🔐  Règles de filtrage pfSense</text>
+      <text x="1450" y="902" font-size="10" fill="#065f46">✓ OPT2 → Internet : autorisé</text>
+      <text x="1450" y="918" font-size="10" fill="#dc2626">✗ OPT2 → LAN : bloqué</text>
+      <text x="1450" y="934" font-size="10" fill="#dc2626">✗ OPT2 → DMZ : bloqué</text>
+      <text x="1450" y="950" font-size="10" fill="#dc2626">✗ LAN → OPT2 : bloqué</text>
+      <text x="1450" y="967" font-size="10" fill="#065f46" font-style="italic">Cloisonnement total des zones</text>
+    </g>
+
+    <!-- Interface Proxmox OPT2 -->
+    <g filter="url(#shadow)">
+      <rect x="1435" y="1010" width="270" height="55" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="1570" y="1032" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">⚙  Proxmox — OPT2</text>
+      <text x="1570" y="1053" text-anchor="middle" font-size="11" fill="#4b5563">172.20.1.250</text>
+    </g>
+
+    <!-- Accès Tailscale -->
+    <g>
+      <rect x="1435" y="1085" width="270" height="55" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="1570" y="1107" text-anchor="middle" font-size="11" font-weight="700" fill="#713f12">🔑  Accès via Tailscale (VPN)</text>
+      <text x="1570" y="1125" text-anchor="middle" font-size="10" fill="#854d0e">Connexion distante externe au LAN</text>
+    </g>
+  </g>
+
+  <!-- ========== LÉGENDE ========== -->
+  <g>
+    <rect x="60" y="1195" width="1680" height="125" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="80" y="1222" font-size="14" font-weight="700" fill="#1e293b">📘  Légende</text>
+
+    <!-- VM -->
+    <rect x="80" y="1238" width="22" height="14" rx="3" fill="url(#vm-grad)" stroke="#1e40af" stroke-width="1.2"/>
+    <text x="110" y="1250" font-size="11" fill="#334155">VM (Machine Virtuelle)</text>
+
+    <!-- CT -->
+    <rect x="280" y="1238" width="22" height="14" rx="3" fill="url(#ct-grad)" stroke="#b45309" stroke-width="1.2"/>
+    <text x="310" y="1250" font-size="11" fill="#334155">CT (Conteneur LXC)</text>
+
+    <!-- pfSense -->
+    <rect x="480" y="1238" width="22" height="14" rx="3" fill="url(#pfsense-grad)" stroke="#7f1d1d" stroke-width="1.2"/>
+    <text x="510" y="1250" font-size="11" fill="#334155">Pare-feu pfSense</text>
+
+    <!-- LAN -->
+    <rect x="680" y="1238" width="22" height="14" rx="3" fill="url(#lan-grad)" stroke="#2563eb" stroke-width="1.2"/>
+    <text x="710" y="1250" font-size="11" fill="#334155">Zone LAN (interne)</text>
+
+    <!-- DMZ -->
+    <rect x="880" y="1238" width="22" height="14" rx="3" fill="url(#dmz-grad)" stroke="#ea580c" stroke-width="1.2"/>
+    <text x="910" y="1250" font-size="11" fill="#334155">Zone DMZ</text>
+
+    <!-- OPT2 -->
+    <rect x="1040" y="1238" width="22" height="14" rx="3" fill="url(#opt2-grad)" stroke="#059669" stroke-width="1.2"/>
+    <text x="1070" y="1250" font-size="11" fill="#334155">Zone utilisateur distant</text>
+
+    <!-- Proxmox -->
+    <rect x="1250" y="1238" width="22" height="14" rx="3" fill="url(#proxmox-grad)" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="4,2"/>
+    <text x="1280" y="1250" font-size="11" fill="#334155">Hyperviseur Proxmox</text>
+
+    <!-- Lignes -->
+    <line x1="80" y1="1278" x2="120" y2="1278" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="130" y="1282" font-size="11" fill="#334155">Flux physique / réseau principal</text>
+
+    <line x1="400" y1="1278" x2="440" y2="1278" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+    <text x="450" y="1282" font-size="11" fill="#334155">Flux applicatif (alertes/supervision)</text>
+
+    <!-- Infos -->
+    <text x="80" y="1305" font-size="10" fill="#64748b" font-style="italic">Adressage : Freebox 192.168.1.0/24  ·  LAN 192.168.10.0/24  ·  DMZ 10.10.10.0/24  ·  OPT2 172.20.1.0/24    |    Proxmox présent sur les 4 réseaux (.250)</text>
+    <text x="1720" y="1305" text-anchor="end" font-size="10" fill="#64748b" font-style="italic">Document portfolio BTS SIO — SISR</text>
+  </g>
+
+</svg>
+
+  </div>
+  <p class="schema-caption">Figure 01 — Schéma détaillé de l'infrastructure</p>
+
+  <!-- Étapes de mise en place -->
+  <div class="steps">
+    <div class="step cyan">
+      <div class="step-num">01</div>
+      <h3>Hyperviseur Proxmox</h3>
+      <p>Installation de <strong>Proxmox VE</strong> sur Shuttle DH32U avec NVMe Lexar 2 To. Création des <strong>4 bridges réseau</strong> correspondant aux quatre zones.</p>
+      <div class="code-block">vmbr0 → WAN (Freebox)
+vmbr1 → LAN principal
+vmbr2 → DMZ
+vmbr3 → OPT2</div>
+    </div>
+
+    <div class="step orange">
+      <div class="step-num">02</div>
+      <h3>Pare-feu pfSense</h3>
+      <p>Déploiement d'une VM <strong>pfSense</strong> avec 4 interfaces virtuelles. Toute la politique de filtrage et le routage inter-zones convergent vers cette VM.</p>
+      <div class="metrics">
+        <div class="metric"><span class="metric-label">WAN</span><span class="metric-value">.1.251</span></div>
+        <div class="metric"><span class="metric-label">LAN</span><span class="metric-value">.10.1</span></div>
+        <div class="metric"><span class="metric-label">DMZ</span><span class="metric-value">10.10.10.1</span></div>
+        <div class="metric"><span class="metric-label">OPT2</span><span class="metric-value">172.20.1.1</span></div>
+      </div>
+    </div>
+
+    <div class="step violet">
+      <div class="step-num">03</div>
+      <h3>DMZ Freebox → pfSense</h3>
+      <p>La <strong>Freebox Pop</strong> est configurée en DMZ stricte vers l'IP du WAN pfSense. Aucun port n'est ouvert directement par la box, tout passe par le pare-feu.</p>
+      <div class="code-block"><span class="comment"># Freebox → DMZ activée</span>
+target: <span class="string">192.168.1.251</span>
+<span class="comment"># = WAN pfSense</span></div>
+    </div>
+
+    <div class="step pink">
+      <div class="step-num">04</div>
+      <h3>Cloisonnement strict</h3>
+      <p>Politique de <strong>moindre privilège</strong> entre les zones. Chaque flux inter-zones doit être justifié par une règle explicite. L'OPT2 (utilisateur distant) n'a accès qu'à Internet.</p>
+      <div class="metrics">
+        <div class="metric"><span class="metric-label">DMZ → LAN</span><span class="metric-value" style="color:var(--neon-red)">DENY</span></div>
+        <div class="metric"><span class="metric-label">OPT2 → LAN</span><span class="metric-value" style="color:var(--neon-red)">DENY</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan d'adressage -->
+  <div class="table-section">
+    <div class="table-title">Plan d'adressage — Vue d'ensemble</div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Zone</th><th>Sous-réseau</th><th>Passerelle</th><th>Rôle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>WAN (Freebox)</td><td class="mono">192.168.1.0/24</td><td class="mono">192.168.1.1</td><td>Liaison Freebox ↔ pfSense</td></tr>
+        <tr><td>LAN principal</td><td class="mono">192.168.10.0/24</td><td class="mono">192.168.10.1</td><td>Hébergement des services</td></tr>
+        <tr><td>OPT1 — DMZ</td><td class="mono">10.10.10.0/24</td><td class="mono">10.10.10.1</td><td>Zone services exposables</td></tr>
+        <tr><td>OPT2</td><td class="mono">172.20.1.0/24</td><td class="mono">172.20.1.1</td><td>Utilisateur distant isolé</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Matrice de filtrage -->
+  <div class="table-section">
+    <div class="table-title">Matrice de filtrage pfSense</div>
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>Source ↓ / Dest →</th>
+          <th>LAN</th>
+          <th>DMZ</th>
+          <th>OPT2</th>
+          <th>Internet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>LAN</th>
+          <td class="self">—</td>
+          <td class="mixed">RÈGLES</td>
+          <td class="deny">DENY</td>
+          <td class="allow">ALLOW</td>
+        </tr>
+        <tr>
+          <th>DMZ</th>
+          <td class="deny">DENY</td>
+          <td class="self">—</td>
+          <td class="deny">DENY</td>
+          <td class="allow">ALLOW</td>
+        </tr>
+        <tr>
+          <th>OPT2</th>
+          <td class="deny">DENY</td>
+          <td class="deny">DENY</td>
+          <td class="self">—</td>
+          <td class="allow">ALLOW</td>
+        </tr>
+        <tr>
+          <th>WAN</th>
+          <td class="deny">DENY</td>
+          <td class="deny">DENY</td>
+          <td class="deny">DENY</td>
+          <td class="self">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tags">
+    <span class="tag tag-cyan">Proxmox VE</span>
+    <span class="tag tag-orange">pfSense</span>
+    <span class="tag tag-violet">Segmentation</span>
+    <span class="tag tag-pink">DMZ</span>
+    <span class="tag tag-green">Routage</span>
+    <span class="tag tag-yellow">VLSM</span>
+  </div>
+</section>
+
+<!-- ===========================================================
+     RP2 — VIRTUALISATION & SERVICES
+     =========================================================== -->
+<section class="rp-section" id="rp2">
+  <span class="rp-marker">RP2</span>
+  <h2 class="rp-title">Virtualisation & services métier</h2>
+  <p class="rp-subtitle">Active Directory · GLPI · Zimbra · KVM · LXC</p>
+
+  <div class="rp-context">
+    <div class="rp-context-label">Contexte</div>
+    <p>Une fois l'architecture réseau en place, il s'agit de déployer les <strong>services métier</strong>. Le choix entre <strong>VM (KVM)</strong> et <strong>conteneurs LXC</strong> est fait selon le besoin : isolation forte ou OS Windows pour les VM, empreinte légère pour les services Linux usuels.</p>
+  </div>
+
+  <!-- Cards des VMs -->
+  <div class="table-section">
+    <div class="table-title">Machines virtuelles — Services critiques</div>
+    <div class="service-grid">
+      <div class="service-card" data-type="vm">
+        <div class="service-name">Win-SRV</div>
+        <div class="service-role">Contrôleur de domaine</div>
+        <div class="service-ip">192.168.10.14</div>
+        <div class="service-desc">Windows Server 2022 — AD DS, DNS, DHCP. Annuaire <strong>16art.coy</strong>. OU <em>Service Accounts</em> pour les comptes techniques (svc-wazuh).</div>
+      </div>
+      <div class="service-card" data-type="vm">
+        <div class="service-name">GLPI</div>
+        <div class="service-role">Gestion de parc</div>
+        <div class="service-ip">192.168.10.15</div>
+        <div class="service-desc">Debian 12 — Inventaire CMDB et helpdesk. Réception de mails depuis Zimbra pour création automatique de tickets.</div>
+      </div>
+      <div class="service-card" data-type="vm">
+        <div class="service-name">Zimbra</div>
+        <div class="service-role">Serveur de messagerie</div>
+        <div class="service-ip">192.168.10.50</div>
+        <div class="service-desc">Ubuntu — SMTP/IMAP local uniquement. Pivot entre Zabbix et GLPI. Aucune exposition Internet.</div>
+      </div>
+      <div class="service-card" data-type="vm">
+        <div class="service-name">Win-User</div>
+        <div class="service-role">Poste client AD</div>
+        <div class="service-ip">DHCP + 10.10.10.100</div>
+        <div class="service-desc">Windows 10/11 joint au domaine. Double NIC : LAN principal + DMZ pour tester des accès contrôlés.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards des CTs -->
+  <div class="table-section">
+    <div class="table-title">Conteneurs LXC — Services Linux légers</div>
+    <div class="service-grid">
+      <div class="service-card" data-type="ct">
+        <div class="service-name">Zabbix</div>
+        <div class="service-role">Supervision</div>
+        <div class="service-ip">192.168.10.20</div>
+        <div class="service-desc">LXC Debian 12 — Collecte de métriques via agents. Source de données pour Grafana et émetteur d'alertes vers Zimbra.</div>
+      </div>
+      <div class="service-card" data-type="ct">
+        <div class="service-name">Wazuh</div>
+        <div class="service-role">SIEM / Sécurité</div>
+        <div class="service-ip">192.168.10.30</div>
+        <div class="service-desc">LXC Debian 12 — Détection d'intrusion, analyse de logs. <strong>LDAP</strong> vers AD pour l'authentification de l'interface.</div>
+      </div>
+      <div class="service-card" data-type="ct">
+        <div class="service-name">Grafana</div>
+        <div class="service-role">Visualisation</div>
+        <div class="service-ip">192.168.10.200</div>
+        <div class="service-desc">LXC Debian 12 — Dashboards exploitant les données Zabbix via la datasource officielle.</div>
+      </div>
+      <div class="service-card" data-type="ct">
+        <div class="service-name">Tailscale</div>
+        <div class="service-role">VPN / Accès distant</div>
+        <div class="service-ip">192.168.10.199</div>
+        <div class="service-desc">LXC Debian 12 — VPN maillé WireGuard, configuré en <strong>subnet router</strong>. Aucune ouverture de port côté WAN.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tags">
+    <span class="tag tag-cyan">Active Directory</span>
+    <span class="tag tag-violet">GLPI</span>
+    <span class="tag tag-green">Zimbra</span>
+    <span class="tag tag-orange">LXC</span>
+    <span class="tag tag-pink">KVM</span>
+    <span class="tag tag-yellow">Debian 12</span>
+  </div>
+</section>
+
+<!-- ===========================================================
+     RP3 — SUPERVISION & SÉCURITÉ
+     =========================================================== -->
+<section class="rp-section" id="rp3">
+  <span class="rp-marker green">RP3</span>
+  <h2 class="rp-title">Supervision, sécurité & accès distant</h2>
+  <p class="rp-subtitle">Zabbix · Wazuh · Grafana · Tailscale · Chaîne d'alerting automatisée</p>
+
+  <div class="rp-context green">
+    <div class="rp-context-label">Contexte</div>
+    <p>Une infrastructure n'a de valeur que si elle est <strong>supervisée</strong> et <strong>défendable</strong>. Cette dernière brique met en œuvre une chaîne d'alerting de bout en bout — de la détection d'incident à la création automatique de ticket — ainsi qu'un accès distant sécurisé sans aucune ouverture de port côté Internet.</p>
+  </div>
+
+  <!-- Chaîne d'alerting -->
+  <div class="table-section">
+    <div class="table-title">Chaîne d'alerting automatisée</div>
+    <div class="flow-chain">
+      <span class="flow-step">Zabbix</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Zimbra (SMTP)</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">GLPI (mail collector)</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step">Ticket créé</span>
+    </div>
+
+    <div class="steps">
+      <div class="step green">
+        <div class="step-num">01</div>
+        <h3>Détection</h3>
+        <p>Zabbix scrute les hôtes via ses <strong>agents</strong>. Quand un seuil est dépassé (CPU, RAM, service down), le trigger se déclenche.</p>
+        <div class="metrics">
+          <div class="metric"><span class="metric-label">Polling</span><span class="metric-value">30s</span></div>
+          <div class="metric"><span class="metric-label">Délai alerte</span><span class="metric-value">< 1 min</span></div>
+        </div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">02</div>
+        <h3>Notification</h3>
+        <p>Le trigger émet un mail structuré vers une <strong>adresse dédiée</strong> hébergée sur Zimbra. Format normalisé pour l'analyse côté GLPI.</p>
+        <div class="code-block"><span class="keyword">From:</span> zabbix@16art.coy
+<span class="keyword">To:</span> tickets@glpi.lan
+<span class="keyword">Subject:</span> [P1] {HOST.NAME}</div>
+      </div>
+
+      <div class="step violet">
+        <div class="step-num">03</div>
+        <h3>Création de ticket</h3>
+        <p>GLPI ingère le mail via son <strong>collecteur</strong>, crée un ticket horodaté, l'assigne à un groupe et lie l'équipement de l'inventaire si trouvé.</p>
+        <div class="metrics">
+          <div class="metric"><span class="metric-label">Statut init</span><span class="metric-value">Nouveau</span></div>
+          <div class="metric"><span class="metric-label">Lien CMDB</span><span class="metric-value">Auto</span></div>
+        </div>
+      </div>
+
+      <div class="step pink">
+        <div class="step-num">04</div>
+        <h3>Traçabilité</h3>
+        <p>Aucune alerte ne peut être <strong>perdue</strong> dans une boîte mail individuelle puisqu'elle aboutit toujours dans un ticket suivi. Cycle complet : détection → résolution → clôture.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sécurité Wazuh + LDAP -->
+  <div class="table-section">
+    <div class="table-title">Authentification centralisée — Wazuh ⇄ AD</div>
+    <div class="rp-context">
+      <div class="rp-context-label">Intégration LDAP</div>
+      <p>Wazuh interroge le contrôleur de domaine <strong>Win-SRV</strong> via LDAP pour authentifier les utilisateurs qui se connectent à son dashboard. Le compte <strong>svc-wazuh</strong> a été provisionné dans l'OU <em>Service Accounts</em> avec les droits minimums requis (lecture de l'annuaire). Les groupes d'administration sont mappés sur des groupes AD : <strong>GRP-Wazuh-Admins</strong>, <strong>GRP-Wazuh-ReadOnly</strong>.</p>
+    </div>
+  </div>
+
+  <!-- Accès distant -->
+  <div class="table-section">
+    <div class="table-title">Accès distant via Tailscale</div>
+    <div class="steps">
+      <div class="step green">
+        <div class="step-num">01</div>
+        <h3>Subnet Router</h3>
+        <p>Le conteneur Tailscale annonce le réseau <strong>192.168.10.0/24</strong> aux autres nœuds du tailnet. Les pairs autorisés peuvent joindre les services internes comme s'ils étaient sur place.</p>
+        <div class="code-block">tailscale up --advertise-routes=
+<span class="string">192.168.10.0/24</span></div>
+      </div>
+
+      <div class="step cyan">
+        <div class="step-num">02</div>
+        <h3>Wake-on-LAN</h3>
+        <p>Le serveur Shuttle est configuré pour répondre au WoL. Réveil à distance depuis le tailnet quand le serveur a été éteint pour économiser de l'énergie.</p>
+        <div class="code-block">ethtool -s enp3s0 wol g
+systemctl enable wol.service</div>
+      </div>
+
+      <div class="step orange">
+        <div class="step-num">03</div>
+        <h3>Zero port forward</h3>
+        <p><strong>Aucun port n'est ouvert</strong> sur la Freebox côté WAN. La surface d'attaque externe est nulle. L'authentification se fait auprès du service Tailscale.</p>
+        <div class="metrics">
+          <div class="metric"><span class="metric-label">Ports WAN</span><span class="metric-value" style="color:var(--neon-green)">0</span></div>
+          <div class="metric"><span class="metric-label">Chiffrement</span><span class="metric-value">WireGuard</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tags">
+    <span class="tag tag-green">Zabbix</span>
+    <span class="tag tag-cyan">Grafana</span>
+    <span class="tag tag-red">Wazuh SIEM</span>
+    <span class="tag tag-violet">LDAP</span>
+    <span class="tag tag-orange">Tailscale</span>
+    <span class="tag tag-pink">Wake-on-LAN</span>
+    <span class="tag tag-yellow">WireGuard</span>
+  </div>
+</section>
+
+<!-- ===========================================================
+     SYNTHÈSE
+     =========================================================== -->
+<section class="rp-section" id="synthese">
+  <span class="rp-marker">SYNTHÈSE</span>
+  <h2 class="rp-title">Bilan & perspectives</h2>
+  <p class="rp-subtitle">Points forts · Évolutions envisagées</p>
+
+  <div class="steps">
+    <div class="step cyan">
+      <div class="step-num">★</div>
+      <h3>Points forts</h3>
+      <p>Pare-feu central unique, trois zones cloisonnées, chaîne d'alerting de bout en bout, annuaire mutualisé, accès distant zéro-port-ouvert.</p>
+    </div>
+    <div class="step orange">
+      <div class="step-num">→</div>
+      <h3>Évolutions</h3>
+      <p>Mise en place d'un Proxmox Backup Server, déploiement d'agents Wazuh sur tous les CT, certificats Let's Encrypt en DNS-01.</p>
+    </div>
+    <div class="step violet">
+      <div class="step-num">∞</div>
+      <h3>Apprentissage continu</h3>
+      <p>Cette infrastructure est un terrain d'expérimentation vivant. Chaque ajout est documenté et alimente le portfolio.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===========================================================
+     FOOTER
+     =========================================================== -->
+<footer class="page-footer">
+  <p>CÉZAR Benjamin — BTS SIO SISR · Portfolio</p>
+  <a href="projet.html">← Retour aux projets</a>
+</footer>
+
+<script>
+  // Léger effet de fade au scroll des sections
+  const sections = document.querySelectorAll('.rp-section, .schema-wrapper');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
